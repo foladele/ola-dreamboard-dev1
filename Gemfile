@@ -22,9 +22,11 @@ gem 'materialize-sass'
 gem 'active_model_serializers'
 gem 'carrierwave', '~> 1.0'
 gem "mini_magick"
+# rails c error 
+gem 'rb-readline'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-
+gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -43,6 +45,7 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# pry moved to production due to error
 group :production do
     gem 'rails_12factor'
     gem 'pry'

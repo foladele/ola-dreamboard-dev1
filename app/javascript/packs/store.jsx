@@ -19,6 +19,8 @@ if(module.hot) {
   });
 }
 
+//console.log("store.getState(): ", store.getState());
+
 export const history = syncHistoryWithStore(browserHistory, store)
 
 export default store

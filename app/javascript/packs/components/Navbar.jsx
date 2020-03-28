@@ -31,7 +31,7 @@ class Navbar extends React.Component {
 				]
 			)
 	  else
-	  	return(<li><Link to="/login">Login</Link></li>)
+	  	return(	<li><Link to="/login">Login</Link></li>)
 	}
 
 	render() {
@@ -45,6 +45,7 @@ class Navbar extends React.Component {
               <li><Link to="/">Home</Link></li>
 				      <li><Link to="/about">About</Link></li>
 				      <li><Link to="/contact">Contact</Link></li>
+				      <li><Link to="/" className="modal-trigger" data-target="modal2" >Add Section</Link></li>
               {this.authLink()}
             </ul>
 					</div>

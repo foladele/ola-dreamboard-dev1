@@ -2,13 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../components/Navbar';
 import { loggedIn, logout } from '../components/auth/actions';
+import { getSections } from '../components/actions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    // console.log("App: ", this.props);
   }
 
   componentWillMount() {
+    this.props.dispatch(getSections());
     const userId = localStorage.getItem('userId');
     const apiKey = localStorage.getItem('apiKey');
     if (!this.props.auth && apiKey)
