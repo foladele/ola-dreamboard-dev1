@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import '../stylesheets/homepagestyle.scss';
 
-
 const Home = () => (
  <div  className="card-title headerImage" role="img" alt="image of your choice">
  	<div>
