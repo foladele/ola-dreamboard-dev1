@@ -1,12 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { handleLogout } from './auth/actions';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
+// import 'materialize-css/dist/css/materialize.min.css';
+import M from  'materialize-css/dist/js/materialize.min.js';
+import '../stylesheets/homepagestyle.scss';
 
 class Navbar extends React.Component {
     constructor(props) {
 		super(props);
 		this.logout = this.logout.bind(this);
+	}
+
+	componentDidMount() {
+	  let sidenav = document.querySelector('#slide-out');
+	  M.Sidenav.init(sidenav, {});
 	}
 
 	logout(e) {
@@ -29,19 +37,18 @@ class Navbar extends React.Component {
 	render() {
 		return(
 			<header>
-			  <div className="navbar-fixed">
-				  <nav>
-				    <div className="nav-wrapper">
-				      <Link to='/' className='brand-logo'>logo</Link>
-				      <ul id="nav-mobile" className="right">
-				        <li><Link to="/">Home</Link></li>
-				        <li><Link to="/about">About</Link></li>
-				        <li><Link to="/contact">Contact</Link></li>
-				        { this.authLink() }
-				      </ul>
-				    </div>
-				  </nav>
-				</div>
+				<nav className="grey lighten-5">
+					<div className="nav-wrapper col s12 m8 offset-m2 l6 offset-l4 z-depth-2">
+						<Link to="/" className="brand-logo right black-text">Logo</Link>
+						<a href="#" data-target="slide-out" className="sidenav-trigger show-on-large black-text"><i className="material-icons">menu</i></a>
+						<ul className="sidenav black-text" id="slide-out">
+              <li><Link to="/">Home</Link></li>
+				      <li><Link to="/about">About</Link></li>
+				      <li><Link to="/contact">Contact</Link></li>
+              {this.authLink()}
+            </ul>
+					</div>
+				</nav>				
 			</header>
 		)
 	}

@@ -6,6 +6,7 @@
     "@rails/webpacker": "5.0.1",
     "@version/react-router-v3": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "materialize-css": "^1.0.0-rc.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
