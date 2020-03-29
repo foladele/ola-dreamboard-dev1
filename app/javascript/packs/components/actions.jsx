@@ -27,7 +27,7 @@ export const updateSection = (id, section) => {
       dataType: 'JSON'
     }).done( section => {      
       let obj = { type: 'UPDATE_SECTIONS', section }
-      //console.log(obj);
+      console.log(obj);
       dispatch(obj);
     }).fail( msg => {
        alert(msg.errors);

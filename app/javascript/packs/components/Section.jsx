@@ -35,10 +35,9 @@ class Section extends React.Component {
 
       isCardColor: false,
       editSection: false, 
-      isCollapse: false,
+      isCollapse: this.props.collapse,
       color: `${this.props.color}`, 
     };
-
 
     this.editSection = this.editSection.bind(this);
     this.toggleEditSection = this.toggleEditSection.bind(this);
@@ -65,10 +64,10 @@ class Section extends React.Component {
      let collapse = false;
      let kind = this.props.kind;
      let section = {title: title, color: color, collapse: collapse, kind: kind};
-     //console.log("cards sess - " + title + " " +  color + " " + collapse + " " + kind)
      if(title.length !== 0)
      {
        this.update(id, section);
+
      }
      
   }
@@ -76,6 +75,7 @@ class Section extends React.Component {
   update(id, section)
   {
   	this.props.updateSection(id,section)
+  	window.location.reload(false);
   }
 
   toggleEditSection(){
@@ -87,10 +87,11 @@ class Section extends React.Component {
   }
 
   toggleCollapse(){
+  	
     let collapse = !this.props.collapse
     let section = {title: this.props.title, color: this.props.color, collapse: collapse, kind: this.props.kind};
     this.update(this.props.id, section);
-
+    this.setState({ isCollapse: collapse })
   }
 
   getColor(color) {
