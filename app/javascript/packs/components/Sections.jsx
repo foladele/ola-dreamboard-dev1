@@ -13,6 +13,7 @@ class Sections extends React.Component {
     super(props);
     this.updateSection = this.updateSection.bind(this);
     this.addSection = this.addSection.bind(this);
+    this.deleteSection = this.deleteSection.bind(this);
   }
 
   updateSection(id, section)
@@ -24,6 +25,12 @@ class Sections extends React.Component {
   addSection(section)
   {
     this.props.addSection(section);
+    window.location.reload(false);
+  }
+
+  deleteSection(id)
+  {
+    this.props.deleteSection(id);
     window.location.reload(false);
   }
 
@@ -43,12 +50,14 @@ class Sections extends React.Component {
         lastSectionIndex={lastSectionIndex} 
         yourIndex={this.props.sections.indexOf(section)}
         update={this.updateSection}
+        sectionLength={this.props.sections.length}
+        deleteSection={this.deleteSection}
         />
       )
     })
 
     return(
-      <div>
+      <div className=" ">
         <ul>{sections}</ul>
         <AddSection addSection={this.addSection}/>
       </div>
@@ -64,6 +73,7 @@ const mapDispatchToProps = (dispatch) => {
   return{
     updateSection: (id, section, sections) => {dispatch(updateSection(id, section, sections))},
     addSection: (section) => {dispatch(addSection(section))},
+    deleteSection: (id) => {dispatch(deleteSection(id))},
   }
   
 }

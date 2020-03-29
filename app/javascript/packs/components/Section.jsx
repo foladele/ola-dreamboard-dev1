@@ -43,6 +43,7 @@ class Section extends React.Component {
     this.toggleCardColor = this.toggleCardColor.bind(this);
     this.getColor = this.getColor.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
+    this.deleteSection = this.deleteSection.bind(this);
     // console.log("section components: ",this.props);
 
   }
@@ -90,6 +91,12 @@ class Section extends React.Component {
     this.setState({ color: color });  
   }
 
+  deleteSection(e)
+  {
+  	e.preventDefault();
+  	this.props.deleteSection(this.props.id);
+  }
+
   render(){
 
   	let style = document.createElement('style');
@@ -108,7 +115,7 @@ class Section extends React.Component {
         	<div className="card-action black-text">
         		<span className="card-title">{this.props.title}</span>
         		<a className="right">
-        		{Boolean(this.props.id !== 1) ? (<div>delete</div>): (null)}
+        		{Boolean(this.props.id !== 1) ? (<div onClick={this.deleteSection}>delete</div>): (null)}
         		</a>
         		<a className=" right" onClick={this.toggleEditSection}>Edit</a>
         		<a className="right" onClick={this.toggleCollapse}>
