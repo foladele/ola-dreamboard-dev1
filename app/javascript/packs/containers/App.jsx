@@ -7,7 +7,7 @@ import { getSections } from '../components/actions';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("App: ", this.props);
+    // console.log("App: ", this.props.sections);
   }
 
   componentWillMount() {

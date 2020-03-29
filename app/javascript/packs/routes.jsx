@@ -7,6 +7,8 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Login from './components/auth/Login';
 import Admin from './components/Admin';
+import Sections from './components/Sections';
+import Section from './components/Section';
 // import { UserAuthWrapper } from 'redux-auth-wrapper';
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history3/redirect'
 import { handleLogout } from './components/auth/actions';
@@ -34,6 +36,8 @@ export default (
       <Route path="contact" component={Contact} />
       <Route path="login" component={Login} />
       <Route path="admin" component={userIsAuthenticated(Admin)} />
+      {/*<Route path="/sections" component={Sections} />*/}
+      <Route path="/section/:id" component={Section} />
     </Route>
     <Route path="*" status={404} component={NoMatch}/>
   </Route>
