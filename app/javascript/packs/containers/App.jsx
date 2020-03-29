@@ -10,7 +10,7 @@ class App extends React.Component {
     // console.log("App: ", this.props.sections);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.dispatch(getSections());
     const userId = localStorage.getItem('userId');
     const apiKey = localStorage.getItem('apiKey');

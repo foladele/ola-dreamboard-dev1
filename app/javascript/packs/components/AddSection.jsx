@@ -52,7 +52,7 @@ class AddSection extends React.Component {
               <div className="input-field col s12 m6">
 
                 <select className="browser-default icons">
-                  <option value="" disabled selected>Choose Section Type</option>
+                  <option value="" disabled defaultValue>Choose Section Type</option>
                   <option value="text" disabled >Text</option>
                   <option value="dreamboard" disabled >Dreamboard</option>
                   <option value="image">Images</option>

@@ -11,7 +11,7 @@ const sections = (state = [], action) => {
 			editSection.title = action.section.title;
       editSection.color = action.section.color;
       editSection.collapse = action.section.collapse;
-      console.log("redux-after", state);
+      //console.log("redux-after", state);
 		default:
 			return state;
 	}
