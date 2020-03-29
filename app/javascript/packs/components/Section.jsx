@@ -5,6 +5,9 @@ import FreeScrollBar from 'react-free-scrollbar';
 import { AppRegistry, StyleSheet, Text, View } from 'react-native-web';
 import SectionColor from './SectionColor'
 import { connect } from 'react-redux';
+import Images from './Images'
+import Texts from './Texts'
+import Dreamboards from './Dreamboards'
 
 
 class Section extends React.Component {
@@ -153,6 +156,23 @@ class Section extends React.Component {
         			<div className={bottomCard} style={this.state.fStyle}>
         				<FreeScrollBar>
         					<View>
+        						{
+        							Boolean(this.props.kind === 'image') ?
+        							(<div>
+        								<Images/>
+        						   </div>) : 
+        							(<div>
+        								{Boolean(this.props.kind === 'text') ? 
+        								 	(<div>
+        								 		 <Texts/>
+        								 		</div>) :
+        								 	(<div>
+        								 		<Dreamboards/>
+        								 	 </div>)
+        								 }
+        						  	</div>
+        							)
+        						}
         					</View>
         				</FreeScrollBar>
         			</div>
@@ -160,14 +180,17 @@ class Section extends React.Component {
         	}
         	<div>
         	{
-        		this.props.lastSectionIndex === this.props.yourIndex ? (
-        			<div className="card-action">
-	        			<div className={bottomCard}>
-	        				<a className="left" >Previous</a>
-	                <a className="right" >Next</a>
-	        			</div>
-	        		</div>
-        	 ) : (null)
+        		Boolean(this.props.sectionLength >= 10) ? 
+        		(<div>{
+        				this.props.lastSectionIndex === this.props.yourIndex ? (
+			        			<div className="card-action">
+				        			<div className={bottomCard}>
+				        				<a className="left" >Previous</a>
+				                <a className="right" >Next</a>
+				        			</div>
+				        		</div>
+			        	 ) : (null)
+        		}</div>) : (null)
         	}
         	</div>
         	</div>

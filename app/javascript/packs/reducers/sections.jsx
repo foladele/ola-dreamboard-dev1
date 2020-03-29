@@ -4,8 +4,9 @@ const sections = (state = [], action) => {
 		case 'GET_SECTIONS':
 			return action.sections;
 		case 'UPDATE_SECTION':
-			//console.log("redux-before", action.sections);
       return action.sections;
+    case 'DELETE_SECTION':
+      //return action.sections;
 		default:
 			return state;
 	}
