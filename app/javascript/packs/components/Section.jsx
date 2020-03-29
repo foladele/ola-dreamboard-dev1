@@ -5,7 +5,6 @@ import FreeScrollBar from 'react-free-scrollbar';
 import { AppRegistry, StyleSheet, Text, View } from 'react-native-web';
 import SectionColor from './SectionColor'
 import { connect } from 'react-redux';
-import { updateSection } from '../components/actions';
 
 
 class Section extends React.Component {
@@ -44,9 +43,7 @@ class Section extends React.Component {
     this.toggleCardColor = this.toggleCardColor.bind(this);
     this.getColor = this.getColor.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
-    this.update = this.update.bind(this);
-
-    //console.log("section components: ",this.props);
+    // console.log("section components: ",this.props);
 
   }
 
@@ -61,21 +58,15 @@ class Section extends React.Component {
 
      let title = this.refs.newTitle.value;
      let color = this.state.color;
-     let collapse = false;
+     let collapse = this.props.collapse;
      let kind = this.props.kind;
      let section = {title: title, color: color, collapse: collapse, kind: kind};
      if(title.length !== 0)
      {
-       this.update(id, section);
+       this.props.update(id, section);
 
      }
      
-  }
-
-  update(id, section)
-  {
-  	this.props.updateSection(id,section)
-  	window.location.reload(false);
   }
 
   toggleEditSection(){
@@ -90,8 +81,8 @@ class Section extends React.Component {
   	
     let collapse = !this.props.collapse
     let section = {title: this.props.title, color: this.props.color, collapse: collapse, kind: this.props.kind};
-    this.update(this.props.id, section);
-    this.setState({ isCollapse: collapse })
+    this.props.update(this.props.id, section);
+    // this.setState({ isCollapse: collapse })
   }
 
   getColor(color) {
@@ -116,7 +107,9 @@ class Section extends React.Component {
         <div className={className} style={this.state.sectionStyle}>
         	<div className="card-action black-text">
         		<span className="card-title">{this.props.title}</span>
-        		<a className="right">delete</a>
+        		<a className="right">
+        		{Boolean(this.props.id !== 1) ? (<div>delete</div>): (null)}
+        		</a>
         		<a className=" right" onClick={this.toggleEditSection}>Edit</a>
         		<a className="right" onClick={this.toggleCollapse}>
               {Boolean(this.props.collapse) ? (<div>expand</div>): (<div>collapse</div>)}
@@ -178,14 +171,7 @@ class Section extends React.Component {
 
 }
 
-const mapDispatchToProps = (dispatch) => {
-
-	return{
-		updateSection: (id, section) => {dispatch(updateSection(id, section))}
-	}
-  
-}
-export default connect(null, mapDispatchToProps)(Section);
+export default Section;
 
 
 

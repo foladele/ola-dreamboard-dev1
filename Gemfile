@@ -19,7 +19,7 @@ gem 'webpacker'
 # gem 'mini_racer', platforms: :ruby
 gem 'devise'
 gem 'materialize-sass'
-gem 'active_model_serializers'
+# gem 'active_model_serializers'
 gem 'carrierwave', '~> 1.0'
 gem "mini_magick"
 # rails c error 
