@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { loggedIn, logout } from '../components/auth/actions';
 import { getSections } from '../components/actions';
 
@@ -22,9 +23,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Navbar auth={this.props.auth} history={this.props.history} />
-        { this.props.children }
+      <div> 
+        <div>
+          <Navbar auth={this.props.auth} history={this.props.history} />
+          <div>{ this.props.children }</div>
+        </div>
+          <Footer/>
+        <div>
+        </div>
+      
+       
       </div>
     )
   }

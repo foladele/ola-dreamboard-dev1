@@ -1,9 +1,9 @@
 class Section < ApplicationRecord
 
 	validates_presence_of :title
-	#has_many :items , dependent: :destroy
-	#has_many :item_image, dependent: :destroy
-	#has_many :item_text, dependent: :destroy
+	#has_many :texts , dependent: :destroy
+	has_many :images, dependent: :destroy
+	#has_many :dreamboards, dependent: :destroy
 	
 	def as_json(_opts = {})
 	 {

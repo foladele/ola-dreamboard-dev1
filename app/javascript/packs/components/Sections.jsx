@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import AddSection from './AddSection'
+import AddItems from './AddItems'
 import Section from './Section'
 import { connect } from 'react-redux';
 import { updateSection, addSection, deleteSection } from '../components/actions';
@@ -59,7 +59,7 @@ class Sections extends React.Component {
     return(
       <div className=" ">
         <ul>{sections}</ul>
-        <AddSection addSection={this.addSection}/>
+        <AddItems addSection={this.addSection}/>
       </div>
     )
   }
@@ -78,3 +78,6 @@ const mapDispatchToProps = (dispatch) => {
   
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Sections);
+
+
+

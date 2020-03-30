@@ -17,6 +17,24 @@ export const getSections = () => {
 	})
 }
 
+export const getImages = (id) => {
+  
+  return(dispatch => {
+    $.ajax({
+      url: `/api/section/${id}/images`,
+      type: 'GET',
+      dataType: 'JSON',
+    }).done( images => {
+
+      let obj = { type: 'GET_IMAGES', images }
+      //console.log("obj ",obj);
+      dispatch(obj);
+    }).fail( response => {
+      console.log(response);
+    });
+  })
+}
+
 export const updateSection = (id, section, sections) => {
   
   return(dispatch => {

@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import Images from './Images'
 import Texts from './Texts'
 import Dreamboards from './Dreamboards'
+import { getImages } from '../components/actions';
+
 
 
 class Section extends React.Component {
@@ -47,7 +49,7 @@ class Section extends React.Component {
     this.getColor = this.getColor.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
-    // console.log("section components: ",this.props);
+    //console.log("section components: ", this.props);
 
   }
 
@@ -159,15 +161,16 @@ class Section extends React.Component {
         						{
         							Boolean(this.props.kind === 'image') ?
         							(<div>
-        								<Images/>
+        								{this.props.getImages(this.props.id)}
+        								<Images id={this.props.id}  />
         						   </div>) : 
         							(<div>
         								{Boolean(this.props.kind === 'text') ? 
         								 	(<div>
-        								 		 <Texts/>
+        								 		 <Texts id={this.props.id}/>
         								 		</div>) :
         								 	(<div>
-        								 		<Dreamboards/>
+        								 		<Dreamboards id={this.props.id}/>
         								 	 </div>)
         								 }
         						  	</div>
@@ -201,7 +204,15 @@ class Section extends React.Component {
 
 }
 
-export default Section;
+const mapDispatchToProps = (dispatch) => {
+
+  return{
+    getImages: (id) => {dispatch(getImages(id))},
+  }
+  
+}
+
+export default connect(null, mapDispatchToProps)(Section);
 
 
 
