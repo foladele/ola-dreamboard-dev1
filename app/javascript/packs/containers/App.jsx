@@ -27,9 +27,9 @@ class App extends React.Component {
         <div>
           <Navbar auth={this.props.auth} history={this.props.history} />
           <div>{ this.props.children }</div>
-        </div>
-          <Footer/>
+        </div> 
         <div>
+          <Footer/>
         </div>
       
        

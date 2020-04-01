@@ -17,23 +17,6 @@ export const getSections = () => {
 	})
 }
 
-export const getImages = (id) => {
-  
-  return(dispatch => {
-    $.ajax({
-      url: `/api/section/${id}/images`,
-      type: 'GET',
-      dataType: 'JSON',
-    }).done( images => {
-
-      let obj = { type: 'GET_IMAGES', images }
-      //console.log("obj ",obj);
-      dispatch(obj);
-    }).fail( response => {
-      console.log(response);
-    });
-  })
-}
 
 export const updateSection = (id, section, sections) => {
   
@@ -92,4 +75,55 @@ export const deleteSection = (id) => {
        alert(msg.errors);
     });
 	})
+}
+
+export const getImages = (id) => {
+  
+  return(dispatch => {
+    $.ajax({
+      url: `/api/section/${id}/images`,
+      type: 'GET',
+      dataType: 'JSON',
+    }).done( images => {
+
+      let obj = { type: 'GET_IMAGES', images }
+      //console.log("obj ",obj);
+      dispatch(obj);
+    }).fail( response => {
+      console.log(response);
+    });
+  })
+}
+
+export const addImages = (id, fileData) => {
+  
+  return(dispatch => {
+    $.ajax({
+       url: `/api/section/${id}/images`,
+       type: 'POST',
+       data: fileData,
+       dataType: 'JSON',
+       contentType: false,
+       processData: false,
+       cache: false,
+       success: function (data) {
+        console.log(data);
+       },error: function (data) {  
+        console.log(data);  
+       }
+     }).done( image => {
+      let obj = { type: 'ADD_IMAGES', image }
+      dispatch(obj);
+    }).fail( response => {
+      console.log(response);
+    });
+  })
+}
+
+export const getSectionId = (id) => {
+  return(dispatch => {
+    let obj = { type: 'SECTION_ID', id }
+    // console.log(obj);
+    dispatch(obj);
+  })
 }

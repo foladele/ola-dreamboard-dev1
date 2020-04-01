@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import Dropzone from 'react-dropzone';
 import request from "superagent";
 import { mdc_image_list__image_aspect_container, mdc_image_list__item, mdc_image_list__item_new } from '../stylesheets/imagestyles'
+import watch from 'redux-watch'
+import { addImages } from '../components/actions';
+
 
 class AddItems extends React.Component {
 
@@ -16,29 +19,53 @@ class AddItems extends React.Component {
       isCardColor: false,
       color: "fff",
       kind: "",
+      sectionId: 0,
+      acceptedFiles: [],
     };
 
     this.addSection = this.addSection.bind(this);
     this.toggleCardColor = this.toggleCardColor.bind(this);
     this.getColor = this.getColor.bind(this);
+    this.addNewImage = this.addNewImage.bind(this);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState){
+    // console.log(" static nextProps: ", nextProps.state.sectionIdReducer.id)
+    // console.log(" static prevState: ", prevState.sectionId)
+   if(nextProps.state.sectionIdReducer.id !== prevState.sectionId){
+    //console.log(" static newState: ", nextProps.state.sectionIdReducer.id)
+     return { sectionId: nextProps.state.sectionIdReducer.id};
+  }
+  else return null;
+}
+
+componentDidUpdate(prevProps, prevState) {
+   // console.log(" update prevProps: ", prevProps.state.sectionIdReducer)
+   // console.log(" update prevState: ", this.props.state.sectionIdReducer)
+  if(prevProps.state.sectionIdReducer!==this.props.state.sectionIdReducer){
+    //console.log(" sectionIdReducer: ", prevProps.state.sectionIdReducer)
+    this.setState({sectionId: this.props.state.sectionIdReducer});
+    //console.log(" newState: ", this.state.sectionId)
+    //this.classMethod();
+  }
+}
+
   componentDidMount() {
-    //console.log("Reaching");
+    // console.log("Reaching");
     const options = {
       onOpenStart: () => {
-        console.log("Open Start");
+        // console.log("Open Start");
        
       },
       onOpenEnd: () => {
-        console.log("Open End");
+        // console.log("Open End");
          
       },
       onCloseStart: () => {
-        console.log("Close Start");
+        // console.log("Close Start");
       },
       onCloseEnd: () => {
-        console.log("Close End");
+        // console.log("Close End");
       },
       inDuration: 250,
       outDuration: 250,
@@ -90,16 +117,14 @@ class AddItems extends React.Component {
         acceptedFiles
     });
 
-    console.log("this.state.files ", this.state.acceptedFiles)
+    //console.log("this.state.files ", this.state.acceptedFiles)
     
     var binaryStr;
     const fileList = document.getElementById("fileList");
     fileList.innerHTML = "";
-    console.log("reaching -0", acceptedFiles[0])
+    //console.log("reaching -0", acceptedFiles[0])
+
     for (let i = 0; i < acceptedFiles.length; i++) {
-
-      // console.log("reaching -i times", acceptedFiles[i]);
-
       const file = acceptedFiles[i];
       const img = document.createElement("img");
       img.classList.add("obj");
@@ -120,9 +145,36 @@ class AddItems extends React.Component {
 
   }
 
+  addNewImage(e)
+  {
+    //updated databse
+    e.preventDefault();
+    //console.log("new image? ", this.state.sectionId , " ", this.state.acceptedFiles)
+    let id = this.state.sectionId
+    let title = this.refs.imgTitle.value;;
+    let description = this.refs.imagedes.value;
+    let kind = "image"
+    //console.log("item Images::: ", title,kind,description );
+
+    this.state.acceptedFiles.map(img => {
+
+      const fileData = new FormData();
+      let image = img;
+      fileData.append("image[image]", image);
+      fileData.append("image[title]", title);
+      fileData.append("image[description]", description);
+      fileData.append("image[kind]", kind);
+
+      this.props.addImages(id,fileData)
+
+      })//end maping
+
+    window.location.reload(false);
+  }
+
   render(){
 
-  //const {getRootProps, getInputProps, isDragActive} = useDropzone({this.onDrop.bind(this)})
+    //console.log("store ", this.props.state.sectionIdReducer);
 
   	return(
   		<div>
@@ -163,7 +215,7 @@ class AddItems extends React.Component {
           <div>
             <div ref={Modal => { this.ImageModal = Modal; }} id="imagemodal" className="modal modal-fixed-footer">
               <div className="modal-content">
-                <h4 className="center">New Image</h4> 
+                <h4 className="center">New Image {this.state.sectionId}</h4> 
                 <input placeholder="Title" ref="imgTitle" required={true} />
                 <div className="input-field col s12 m6">
                   <select className="browser-default icons" >
@@ -205,7 +257,7 @@ class AddItems extends React.Component {
               </div>
               <div className="modal-footer">
                 <a className="modal-close waves-effect waves-green btn-flat">CANCEL</a>
-                <a className="modal-close waves-effect waves-green btn-flat">OK</a>
+                <a className="modal-close waves-effect waves-green btn-flat" onClick={this.addNewImage}>OK</a>
               </div>
             </div>
           </div>
@@ -215,5 +267,18 @@ class AddItems extends React.Component {
   	)
   }
 }
-export default AddItems;
 
+const mapStateToProps = (state) => {
+  return{state}
+}
+
+const mapDispatchToProps = (dispatch) => {
+
+  return{
+    addImages: (id, fileData) => {dispatch(addImages(id, fileData))},
+  }
+  
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AddItems);
+
+//export default AddItems;

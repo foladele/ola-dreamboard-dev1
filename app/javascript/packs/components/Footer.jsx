@@ -11,6 +11,7 @@ const footerStyle = {
     position: "fixed",
     bottom: '0pt',
     left: '0pt',
+    
  }
 
 class Footer extends React.Component {
@@ -18,7 +19,7 @@ class Footer extends React.Component {
  render() {
 
     return (
-      <div>
+      <div style={{paddingTop: '50px'}}>
         <div>
 	        <footer className="page-footer grey lighten-5" style={footerStyle}>
 		        	<div className="footer-copyright">

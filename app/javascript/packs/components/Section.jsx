@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Images from './Images'
 import Texts from './Texts'
 import Dreamboards from './Dreamboards'
-import { getImages } from '../components/actions';
+// import { getImages } from '../components/actions';
 
 
 
@@ -118,7 +118,7 @@ class Section extends React.Component {
       <div>
         <div className={className} style={this.state.sectionStyle}>
         	<div className="card-action black-text">
-        		<span className="card-title">{this.props.title}</span>
+        		<span className="card-title">{this.props.title }</span>
         		<a className="right">
         		{Boolean(this.props.id !== 1) ? (<div onClick={this.deleteSection}>delete</div>): (null)}
         		</a>
@@ -150,6 +150,16 @@ class Section extends React.Component {
             	) : (null)
             }
 
+            <a className=" right">
+              {Boolean(this.props.kind === "image") ? (<i className="material-icons">image</i>) : 
+              (<div>{Boolean(this.props.kind === "dreamboard") ? 
+                (<i className="material-icons">dashboard</i>) : 
+                (<i className="material-icons">textsms</i>)}
+               </div>
+              )
+              }
+            </a>
+
         	</div>
         	<div>
         	{ 
@@ -161,7 +171,6 @@ class Section extends React.Component {
         						{
         							Boolean(this.props.kind === 'image') ?
         							(<div>
-        								{this.props.getImages(this.props.id)}
         								<Images id={this.props.id}  />
         						   </div>) : 
         							(<div>
@@ -181,10 +190,11 @@ class Section extends React.Component {
         			</div>
         		)	
         	}
-        	<div>
+        {/*	<div>
         	{
         		Boolean(this.props.sectionLength >= 10) ? 
-        		(<div>{
+        		(*/}
+        			<div>{
         				this.props.lastSectionIndex === this.props.yourIndex ? (
 			        			<div className="card-action">
 				        			<div className={bottomCard}>
@@ -193,9 +203,11 @@ class Section extends React.Component {
 				        			</div>
 				        		</div>
 			        	 ) : (null)
-        		}</div>) : (null)
+
+        		}</div>
+        {/*		) : (null)
         	}
-        	</div>
+        	</div>*/}
         	</div>
         </div>
       </div>
@@ -204,15 +216,7 @@ class Section extends React.Component {
 
 }
 
-const mapDispatchToProps = (dispatch) => {
-
-  return{
-    getImages: (id) => {dispatch(getImages(id))},
-  }
-  
-}
-
-export default connect(null, mapDispatchToProps)(Section);
+export default Section;
 
 
 

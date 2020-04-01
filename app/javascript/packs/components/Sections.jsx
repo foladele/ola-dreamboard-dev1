@@ -11,6 +11,9 @@ class Sections extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      sections: this.props.sections,
+    }
     this.updateSection = this.updateSection.bind(this);
     this.addSection = this.addSection.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
@@ -35,7 +38,10 @@ class Sections extends React.Component {
   }
 
   render(){
-    // console.log("sections components: ",this.props.sections);
+    //this.setState({ sections: this.props.sections });
+    // console.log("sections props: ",this.props.sections);
+    // console.log("sections state: ",this.state.sections);
+    
 
     let lastSectionIndex = 0;
     if(this.props.sections.length != 0)
@@ -77,6 +83,7 @@ const mapDispatchToProps = (dispatch) => {
   }
   
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Sections);
 
 

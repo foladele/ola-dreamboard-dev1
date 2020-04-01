@@ -7,6 +7,7 @@ class Image < ApplicationRecord
 	 def as_json(_opts = {})
 	 {
 		  id: id,
+		  section_id: section_id,
 		  image: image_url_large,
 		  title: title,
 	    description: description,
