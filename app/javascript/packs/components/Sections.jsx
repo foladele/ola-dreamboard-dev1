@@ -39,7 +39,7 @@ class Sections extends React.Component {
 
   render(){
     //this.setState({ sections: this.props.sections });
-    console.log("sections props: ",this.props.sections);
+    //console.log("sections props: ",this.props.sections);
     // console.log("sections state: ",this.state.sections);
     
 

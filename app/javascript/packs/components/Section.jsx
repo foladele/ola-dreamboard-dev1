@@ -68,12 +68,13 @@ class Section extends React.Component {
      let color = this.state.color;
      let collapse = this.props.collapse;
      let kind = this.props.kind;
-     let section = {title: title, color: color, collapse: collapse, kind: kind};
-     if(title.length !== 0)
+     if(title.length === 0)
      {
-       this.props.update(id, section);
-
+       
+        title = this.props.title
      }
+     let section = {title: title, color: color, collapse: collapse, kind: kind};
+     this.props.update(id, section);
      
   }
 
@@ -130,11 +131,17 @@ class Section extends React.Component {
             </a>
             {
             	Boolean(this.state.editSection) ? (
-            		<div>
+            		<div className="">
             			<input placeholder={this.props.title} ref="newTitle" required={true} />
             			<div className="input-field col s12 m6">
                     <select className="browser-default icons">
                       <option value={this.props.kind} disabled selected>{this.props.kind}</option>
+                    </select>
+                  </div>
+                  <div className="input-field col s12 m6">
+                    <select className="browser-default icons">
+                      <option value="public" disabled selected >public</option>
+                      <option value="private" disabled >private</option>
                     </select>
                   </div>
                   <a className="waves-effect waves-green btn-flat black" onClick={this.toggleCardColor}>Choose Color</a>  
@@ -169,7 +176,7 @@ class Section extends React.Component {
         		Boolean(this.props.collapse) ? (null):(
         			<div className={bottomCard} style={this.state.fStyle}>
         				<FreeScrollBar>
-        					<View>
+        					<View className="center">
         						{
         							Boolean(this.props.kind === 'image') ?
         							(<div>

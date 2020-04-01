@@ -25,7 +25,7 @@ class Api::ImagesController < ApplicationController
   end
 
   def destroy    
-    @section.image.find(params[:id]).destroy
+    @section.images.find(params[:id]).destroy
     render json: { message: 'item deleted' }
   end
 

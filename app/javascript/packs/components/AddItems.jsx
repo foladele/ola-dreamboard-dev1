@@ -7,8 +7,8 @@ import Dropzone from 'react-dropzone';
 import request from "superagent";
 import { mdc_image_list__image_aspect_container, mdc_image_list__item, mdc_image_list__item_new } from '../stylesheets/imagestyles'
 import watch from 'redux-watch'
-import { addImages } from '../components/actions';
-
+import { addImages, updateImage } from '../components/actions';
+import Lightbox from 'react-lightbox-component';
 
 class AddItems extends React.Component {
 
@@ -95,6 +95,8 @@ componentDidUpdate(prevProps, prevState) {
 
   }
 
+
+
   handleChange(e) {
 
     e.preventDefault();
@@ -172,9 +174,47 @@ componentDidUpdate(prevProps, prevState) {
     window.location.reload(false);
   }
 
+  updateImage(image, images)
+  {
+    
+    //console.log("new image? ", this.state.sectionId , " ", this.state.acceptedFiles)
+    let id = image.id
+    let sectionId = this.state.sectionId
+    //let images = this.props.state.images
+    let title = this.refs.imgTitle.value;
+    if (title === ''){
+      title = image.title
+    }
+
+    let description = this.refs.imagedes.value;
+    if (description === ''){
+      description = image.description
+    }
+    let kind = "image"
+    //console.log("item Images::: ", title,kind,description );
+
+    this.state.acceptedFiles.map(img => {
+
+      const fileData = new FormData();
+      let image = img;
+      fileData.append("image[image]", image);
+      fileData.append("image[title]", title);
+      fileData.append("image[description]", description);
+      fileData.append("image[kind]", kind);
+
+      this.props.updateImage(id, sectionId, fileData, images)
+
+      })//end maping
+
+    window.location.reload(false);
+  }
+
+
+
   render(){
 
     //console.log("store ", this.props.state.sectionIdReducer);
+    //console.log("store ", this.props.state)
 
   	return(
   		<div>
@@ -215,8 +255,15 @@ componentDidUpdate(prevProps, prevState) {
           <div>
             <div ref={Modal => { this.ImageModal = Modal; }} id="imagemodal" className="modal modal-fixed-footer">
               <div className="modal-content">
-                <h4 className="center">New Image {this.state.sectionId}</h4> 
-                <input placeholder="Title" ref="imgTitle" required={true} />
+                <h4 className="center">
+                {Boolean(this.props.state.imageId.id > 0) ? (<div>Edit Image {this.state.sectionId}</div>) : (<div> New Image {this.state.sectionId}</div>)}
+                </h4> 
+                <div>
+                {Boolean(this.props.state.imageId.id > 0) ? 
+                  (<div><input placeholder={this.props.state.image.title} ref="imgTitle" required={true} /></div>) : 
+                  (<div><input placeholder="Title" ref="imgTitle" required={true} /></div>)
+                }
+                </div>
                 <div className="input-field col s12 m6">
                   <select className="browser-default icons" >
                     <option value="image" disabled defaultValue selected >Images</option>
@@ -225,7 +272,12 @@ componentDidUpdate(prevProps, prevState) {
                   <div className="row">
                     <div className="input-field col s12">
                       <textarea id="textarea1" className="materialize-textarea" ref="imagedes"></textarea>
-                      <label htmlFor="textarea1">Description</label>
+                      <label htmlFor="textarea1">
+                      {Boolean(this.props.state.imageId.id > 0) ? 
+                        (<div>{this.props.state.image.description}</div>) : 
+                        (<div> Description</div>)
+                      }
+                      </label>
                     </div>
                   </div>
                   <div className="row">
@@ -249,7 +301,22 @@ componentDidUpdate(prevProps, prevState) {
                         </Dropzone>
                       </div>
                       <div className="col s6" id="fileList">
-                        <p>No files selected!</p>
+                        {Boolean(this.props.state.imageId.id > 0) ? 
+                          (<div>
+                            <Lightbox images={[
+                               {
+                                src: `${this.props.state.image.image}`,
+                                title: `${this.props.state.image.title}`,
+                               }
+                              ]}
+                              thumbnailWidth='225.38px'
+                              thumbnailHeight='150px' 
+
+                            />
+
+                          </div>) : 
+                          (<div><p>No files selected!</p></div>)
+                        }
                       </div>
                     </div>
                   </div>
@@ -257,7 +324,13 @@ componentDidUpdate(prevProps, prevState) {
               </div>
               <div className="modal-footer">
                 <a className="modal-close waves-effect waves-green btn-flat">CANCEL</a>
-                <a className="modal-close waves-effect waves-green btn-flat" onClick={this.addNewImage}>OK</a>
+                <div>
+                {Boolean(this.props.state.imageId.id > 0) ? 
+                  (<a className="modal-close waves-effect waves-green btn-flat" onClick={() => this.updateImage(this.props.state.image, this.props.state.images)}>UPDATE</a>) : 
+                  (<a className="modal-close waves-effect waves-green btn-flat" onClick={this.addNewImage}>OK</a>)
+                }
+                </div>
+                
               </div>
             </div>
           </div>
@@ -276,6 +349,7 @@ const mapDispatchToProps = (dispatch) => {
 
   return{
     addImages: (id, fileData) => {dispatch(addImages(id, fileData))},
+    updateImage: (id, sectionId, fileData, images) => {dispatch(updateImage(id, sectionId, fileData, images))},
   }
   
 }

@@ -9,6 +9,8 @@ const images = (state = [], action) => {
 				...state, 
 				images: action.image
 			}
+			case 'UPDATE_IMAGE':
+			console.log("update image dispatch: ", action.image)
 		default:
 			return state;
 	}

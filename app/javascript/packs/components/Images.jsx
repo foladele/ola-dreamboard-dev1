@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone';
 import M from "materialize-css";
 import { mdc_image_list__image_aspect_container, mdc_image_list__item, mdc_image_list__item_new } from '../stylesheets/imagestyles'
 import AddItems from './AddItems'
-import { addImage, getSectionId } from '../components/actions';
+import { addImage, getSectionId, getImageId, getImage } from '../components/actions';
 // import {MDCList} from '@material/list';
 
 // const list = new MDCList(document.querySelector('.mdc-list'));
@@ -19,6 +19,8 @@ class Images extends React.Component {
     super(props);
 
     this.dispatchSectionId = this.dispatchSectionId.bind(this);
+    this.dispatchImageId = this.dispatchImageId.bind(this);
+    this.deleteImage = this.deleteImage.bind(this);
     this.state = { 
       sectionId: 0,
       images: []
@@ -43,6 +45,37 @@ class Images extends React.Component {
   {
     e.preventDefault();
     this.props.getSectionId(this.props.id);
+    this.props.getImageId(0);
+    //window.location.reload(false);
+
+  }
+
+  deleteImage(id){
+    console.log("deleteImage ", id)
+    $.ajax({
+      url: `/api/section/${this.props.id}/images/${id}`,
+      type: 'DELETE'
+    }).done( image  => {
+      let images = this.state.images;
+      let index = images.findIndex( b => b.id === image.id );
+      this.setState({ 
+        images: [
+          ...images.slice(0, index),
+          ...images.slice(index + 1, images.length)
+        ] 
+      });
+    }).fail( msg => {
+      alert(msg.errors);
+    });
+  }
+
+  dispatchImageId(id)
+  {
+    let image = this.state.images.find(i => i.id === id);
+    //console.log("dispatchImageId ", image);
+    this.props.getSectionId(this.props.id);
+    this.props.getImageId(id);
+    this.props.getImage(image, this.state.images);
     //window.location.reload(false);
 
   }
@@ -72,8 +105,8 @@ class Images extends React.Component {
             <div className="card-content">
               <span className="card-title black-text">{image.title}</span>
               <p>{image.description}</p>
-              <a className="modal-close waves-effect waves-green btn-flat right" onClick={this.deleteItemImages}>Delete</a>
-              <a className="modal-close waves-effect waves-green btn-flat right">Edit</a>
+              <a className="modal-close waves-effect waves-green btn-flat right" onClick={() => this.deleteImage(image.id)}>Delete</a>
+              <a className="modal-close waves-effect waves-green btn-flat right modal-trigger" data-target="imagemodal" onClick={ () => this.dispatchImageId(image.id) }>Edit</a>
             </div>
           </li>
       )
@@ -109,16 +142,18 @@ class Images extends React.Component {
     
   }
 }
-const mapStateToProps = (state) => {
-  return{images: state.images}
-}
+// const mapStateToProps = (state) => {
+//   return{images: state.images}
+// }
 
 const mapDispatchToProps = (dispatch) => {
   return{
     getSectionId: (id) => {dispatch(getSectionId(id))},
+    getImageId: (id) => {dispatch(getImageId(id))},
+    getImage: (image, images) => {dispatch(getImage(image, images))},
   }  
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Images);
+export default connect(null, mapDispatchToProps)(Images);
 
 
 

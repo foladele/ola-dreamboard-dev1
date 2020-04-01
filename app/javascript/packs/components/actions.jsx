@@ -127,3 +127,54 @@ export const getSectionId = (id) => {
     dispatch(obj);
   })
 }
+
+export const getImageId = (id) => {
+  return(dispatch => {
+    let obj = { type: 'IMAGE_ID', id }
+    // console.log(obj);
+    dispatch(obj);
+  })
+}
+
+export const getImage = (image, images) => {
+  return(dispatch => {
+    let obj = { type: 'IMAGE_IMAGE', image }
+    //console.log(obj);
+    dispatch(obj);
+
+    let n_obj = { type: 'GET_IMAGES', images }
+    dispatch(n_obj);
+  })
+}
+
+export const updateImage = (id, sectionId, fileData, images) => {
+  
+  return(dispatch => {
+    $.ajax({
+      url: `/api/section/${sectionId}/images/${id}`,
+      type: 'PUT',
+      data: fileData,
+      dataType: 'JSON',
+      contentType: false,
+      processData: false,
+      cache: false,
+      success: function (data) {
+       console.log(data);
+      },error: function (data) {  
+       console.log(data);  
+      }
+    }).done( image => {
+
+      //console.log("updateimage ", images);
+      let editImage = images.find( i => i.id === image.id );
+      editImage.title = image.title;
+      editImage.color = image.color;
+      editImage.collapse = image.collapse; 
+      let obj = { type: 'UPDATE_IMAGE', image }
+      console.log(obj);
+      dispatch(obj);
+    }).fail( msg => {
+       alert(msg.errors);
+    });
+  })
+}
