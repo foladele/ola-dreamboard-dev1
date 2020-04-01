@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import '../stylesheets/homepagestyle.scss';
 import Sections from './Sections'
 
 //pry error
