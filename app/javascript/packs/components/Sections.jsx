@@ -11,9 +11,9 @@ class Sections extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      sections: this.props.sections,
-    }
+    // this.state = {
+    //   sections: this.props.sections,
+    // }
     this.updateSection = this.updateSection.bind(this);
     this.addSection = this.addSection.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
@@ -39,7 +39,7 @@ class Sections extends React.Component {
 
   render(){
     //this.setState({ sections: this.props.sections });
-    // console.log("sections props: ",this.props.sections);
+    console.log("sections props: ",this.props.sections);
     // console.log("sections state: ",this.state.sections);
     
 

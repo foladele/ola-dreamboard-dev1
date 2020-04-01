@@ -19,13 +19,15 @@ class Section extends React.Component {
 
     this.state = { 
       bStyle: {
-        height: '400px',
-        width: '1280px',
+        minHeight: '400px',
+        height: 'auto',
+        width: '100%',
         backgroundColor: `${this.props.color}`,
       },
       fStyle: {
+        minHeight: '400px',
         height: '400px',
-        width: '1250px',
+        width: '100%',
         backgroundColor: `${this.props.color}`,
       },
       testBC:{
@@ -34,7 +36,7 @@ class Section extends React.Component {
       sectionStyle: {
         color:  `${this.props.color}` + '!important',
         textColor: 'black',
-        width: '1280px',
+        width: '100%',
       },
 
       isCardColor: false,
