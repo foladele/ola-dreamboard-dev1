@@ -21,6 +21,7 @@ class AddItems extends React.Component {
       kind: "",
       sectionId: 0,
       acceptedFiles: [],
+      images: [],
     };
 
     this.addSection = this.addSection.bind(this);
@@ -120,6 +121,7 @@ componentDidUpdate(prevProps, prevState) {
     });
 
     //console.log("this.state.files ", this.state.acceptedFiles)
+    this.setState({ images: this.props.state.images });
     
     var binaryStr;
     const fileList = document.getElementById("fileList");
@@ -167,9 +169,25 @@ componentDidUpdate(prevProps, prevState) {
       fileData.append("image[description]", description);
       fileData.append("image[kind]", kind);
 
-      this.props.addImages(id,fileData)
+      //this.props.addImages(id,fileData)
+      $.ajax({
+         url: `/api/section/${id}/images`,
+         type: 'POST',
+         data: fileData,
+         dataType: 'JSON',
+         contentType: false,
+         processData: false,
+         cache: false,
+         success: function (data) {
+          console.log(data);
+         },error: function (data) {  
+          console.log(data);  
+         }
+       }).done(image => {
+          console.log(image);
+       })//end done
 
-      })//end maping
+    })//end maping
 
     window.location.reload(false);
   }
@@ -193,20 +211,81 @@ componentDidUpdate(prevProps, prevState) {
     let kind = "image"
     //console.log("item Images::: ", title,kind,description );
 
-    this.state.acceptedFiles.map(img => {
+    if (this.state.acceptedFiles.length > 0)
+    {
+      this.state.acceptedFiles.map(img => {
 
-      const fileData = new FormData();
-      let image = img;
-      fileData.append("image[image]", image);
-      fileData.append("image[title]", title);
-      fileData.append("image[description]", description);
-      fileData.append("image[kind]", kind);
+        const fileData = new FormData();
+        let image = img;
+        fileData.append("image[image]", image);
+        fileData.append("image[title]", title);
+        fileData.append("image[description]", description);
+        fileData.append("image[kind]", kind);
 
-      this.props.updateImage(id, sectionId, fileData, images)
+        //this.props.updateImage(id, sectionId, fileData, images)
+         $.ajax({
+          url: `/api/section/${sectionId}/images/${id}`,
+          type: 'PUT',
+          data: fileData,
+          dataType: 'JSON',
+          contentType: false,
+          processData: false,
+          cache: false,
+          success: function (data) {
+           console.log(data);
+          },error: function (data) {  
+           console.log(data);  
+          }
+        }).done( image => {
+          let editImage = images.find( i => i.id === image.id );
+          editImage.title = image.title;
+          editImage.color = image.color;
+          editImage.collapse = image.collapse; 
+          this.setState({ images: images });
+          console.log(this.state.images);
+        }).fail( msg => {
+           alert(msg.errors);
+        });
 
-      })//end maping
+        })//end maping
 
-    window.location.reload(false);
+    }else{
+
+       const fileData = new FormData();
+        let image = image.image;
+        fileData.append("image[image]", image);
+        fileData.append("image[title]", title);
+        fileData.append("image[description]", description);
+        fileData.append("image[kind]", kind);
+
+        //this.props.updateImage(id, sectionId, fileData, images)
+         $.ajax({
+          url: `/api/section/${sectionId}/images/${id}`,
+          type: 'PUT',
+          data: fileData,
+          dataType: 'JSON',
+          contentType: false,
+          processData: false,
+          cache: false,
+          success: function (data) {
+           console.log(data);
+          },error: function (data) {  
+           console.log(data);  
+          }
+        }).done( image => {
+          let editImage = images.find( i => i.id === image.id );
+          editImage.title = image.title;
+          editImage.color = image.color;
+          editImage.collapse = image.collapse; 
+          this.setState({ images: images });
+        }).fail( msg => {
+           alert(msg.errors);
+        });
+
+    }
+
+    window.location.reload(true);
+    // window.location.reload(true);
   }
 
 
@@ -214,7 +293,7 @@ componentDidUpdate(prevProps, prevState) {
   render(){
 
     //console.log("store ", this.props.state.sectionIdReducer);
-    //console.log("store ", this.props.state)
+    console.log("store ", this.props.state)
 
   	return(
   		<div>

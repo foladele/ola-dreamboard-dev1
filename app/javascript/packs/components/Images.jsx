@@ -33,7 +33,7 @@ class Images extends React.Component {
         type: 'GET',
         dataType: 'JSON',
         success: function (data) {
-          //console.log("data ", data);
+          // console.log("data ", data);
         }
       }).done( images => { 
           this.setState({ images });  
@@ -67,6 +67,7 @@ class Images extends React.Component {
     }).fail( msg => {
       alert(msg.errors);
     });
+    window.location.reload(false);
   }
 
   dispatchImageId(id)
