@@ -112,7 +112,8 @@ class Sections extends React.Component {
 
     let sections = this.state.sections.map(section => {
      return(
-        <Section key={`section-${section.id}`} {...section} 
+        <Section key={`section-${section.id}`} {...section}
+        firstSectionIndex={0} 
         lastSectionIndex={lastSectionIndex} 
         yourIndex={this.state.sections.indexOf(section)}
         update={this.updateSection}

@@ -115,7 +115,7 @@ class Images extends React.Component {
 
       return (
         <div>
-          <div>
+          <div className="">
            <p className="center" style={{ position: 'relative'}} >
            { Boolean(this.state.images.length < 12) ? 
             (<i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i>) : (null)

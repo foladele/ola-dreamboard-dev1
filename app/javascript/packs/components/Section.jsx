@@ -123,7 +123,7 @@ class Section extends React.Component {
         	<div className="card-action black-text">
         		<span className="card-title">{this.props.title }</span>
         		<a className="right">
-        		{Boolean(this.props.id !== 1) ? (<div onClick={this.deleteSection}>delete</div>): (null)}
+        		{Boolean(this.props.firstSectionIndex !== this.props.yourIndex) ? (<div onClick={this.deleteSection}>delete</div>): (null)}
         		</a>
         		<a className=" right" onClick={this.toggleEditSection}>Edit</a>
         		<a className="right" onClick={this.toggleCollapse}>
