@@ -6,7 +6,7 @@ ruby '2.4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -36,7 +36,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+gem 'fog-aws'
+gem 'aws-sdk', '~> 2.3'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
@@ -49,6 +50,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # pry moved to production due to error
 group :production do
     gem 'rails_12factor'
+    gem 'pg', '>= 0.18', '< 2.0'
     gem 'pry'
 end
 
