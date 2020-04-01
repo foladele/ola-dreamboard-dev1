@@ -192,10 +192,10 @@ class Section extends React.Component {
         			</div>
         		)	
         	}
-        {/*	<div>
+        	<div>
         	{
         		Boolean(this.props.sectionLength >= 10) ? 
-        		(*/}
+        		(
         			<div>{
         				this.props.lastSectionIndex === this.props.yourIndex ? (
 			        			<div className="card-action">
@@ -207,9 +207,9 @@ class Section extends React.Component {
 			        	 ) : (null)
 
         		}</div>
-        {/*		) : (null)
+        		) : (null)
         	}
-        	</div>*/}
+        	</div>
         	</div>
         </div>
       </div>

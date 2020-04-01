@@ -194,7 +194,7 @@ componentDidUpdate(prevProps, prevState) {
                   <option value="image">Images</option>
                 </select>
                 <br/>
-                <a className="waves-effect waves-green btn-flat black"  onClick={this.toggleCardColor}>Choose Color</a>  
+                <a className="waves-effect waves-green btn-flat black white-text"  onClick={this.toggleCardColor}>Choose Color</a>  
                 {
                     this.state.isCardColor ? (
                       <div>
