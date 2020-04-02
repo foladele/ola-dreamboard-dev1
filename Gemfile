@@ -19,7 +19,7 @@ gem 'webpacker'
 # gem 'mini_racer', platforms: :ruby
 gem 'devise'
 gem 'materialize-sass'
-gem 'active_model_serializers'
+# gem 'active_model_serializers'
 gem 'carrierwave', '~> 1.0'
 gem "mini_magick"
 gem "paperclip", ">= 5.2.0"
@@ -37,6 +37,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'fog-aws'
+# gem 'fog'
 gem 'aws-sdk-s3', '~> 1'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

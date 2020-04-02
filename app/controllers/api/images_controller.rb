@@ -1,3 +1,4 @@
+# require 'fog/aws'
 class Api::ImagesController < ApplicationController
 
 	before_action :find_section
