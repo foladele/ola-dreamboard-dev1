@@ -89,8 +89,8 @@ class Images extends React.Component {
       let images = this.state.images.map(image => {
         image = image
         return (
-          <li key={`image-${image.id}`} className="mdc-image-list__item " style={mdc_image_list__item}>
-            <div className="mdc-image-list__image-aspect-container " style={mdc_image_list__image_aspect_container}>
+          <li key={`image-${image.id}`} className="mdc-image-list__item card" style={mdc_image_list__item}>
+            <div className="mdc-image-list__image-aspect-container card-image" style={mdc_image_list__image_aspect_container}>
               {/*<img className="mdc-image-list__image card-image" src={image.image}/>*/}
               <Lightbox images={[
                  {
@@ -102,10 +102,13 @@ class Images extends React.Component {
                 thumbnailHeight='278px' 
 
               />
+              
             </div>
             <div className="card-content">
-              <span className="card-title black-text">{image.title}</span>
+              <span className="card-title black-text ">{image.title}</span>
               <p>{image.description}</p>
+            </div>
+            <div className="card-action">
               <a className="modal-close waves-effect waves-green btn-flat right" onClick={() => this.deleteImage(image.id)}>Delete</a>
               <a className="modal-close waves-effect waves-green btn-flat right modal-trigger" data-target="imagemodal" onClick={ () => this.dispatchImageId(image.id) }>Edit</a>
             </div>
@@ -122,8 +125,8 @@ class Images extends React.Component {
            }
            </p>
            <br/>
-            <ul className="mdc-image-list my-image-list row" >
-              <div>{images}</div>
+            <ul className="mdc-image-list my-image-list" >
+              <div className=" col s12 m7">{images}</div>
             </ul>
           </div>
           

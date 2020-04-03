@@ -68,5 +68,16 @@ Rails.application.configure do
   #     s3_region: ENV.fetch('AWS_REGION'),
   #   }
   # }
-  
+
+  # config.paperclip_defaults = {
+
+  #   storage: :fog,
+  #   fog_credentials: {
+  #     provider:               "AWS",
+  #     :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],
+  #     :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY']
+  #   },
+  #   fog_directory: ENV['AWS_FOG_DIRECTORY']
+  # }
+
 end
