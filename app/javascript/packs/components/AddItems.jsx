@@ -10,6 +10,7 @@ import watch from 'redux-watch'
 import { addImages, updateImage } from '../components/actions';
 import Lightbox from 'react-lightbox-component';
 
+
 class AddItems extends React.Component {
 
 	constructor(props) {
@@ -28,7 +29,7 @@ class AddItems extends React.Component {
     this.toggleCardColor = this.toggleCardColor.bind(this);
     this.getColor = this.getColor.bind(this);
     this.addNewImage = this.addNewImage.bind(this);
-    //this.realoadPage = this.realoadPage.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
@@ -89,7 +90,8 @@ componentDidUpdate(prevProps, prevState) {
     let collapse = false;
 
     //TODO update to get from states
-    let kind = "image";
+    //let kind = "image";
+    let kind = this.state.kind
     e.preventDefault();
     let section = {title: title, color: color, collapse: collapse, kind: kind};
     console.log(section);
@@ -97,13 +99,13 @@ componentDidUpdate(prevProps, prevState) {
 
   }
 
-
-
   handleChange(e) {
 
     e.preventDefault();
-    console.log(e.target.value);
-    this.setState({ kind: e.target.value });
+    let kind = e.target.value
+    console.log("kind", kind);
+
+    this.setState({ kind: kind });
   }
 
   getColor(color) {
@@ -134,7 +136,7 @@ componentDidUpdate(prevProps, prevState) {
       const img = document.createElement("img");
       img.classList.add("obj");
       img.file = file;
-      img.height = 150;
+      img.height = 250;
       fileList.appendChild(img);
 
       const reader = new FileReader();
@@ -209,7 +211,7 @@ componentDidUpdate(prevProps, prevState) {
     if (description === ''){
       description = image.description
     }
-    let kind = "image"
+    let kind = this.state.kind
     //console.log("item Images::: ", title,kind,description );
 
     if (this.state.acceptedFiles.length > 0)
@@ -311,8 +313,8 @@ componentDidUpdate(prevProps, prevState) {
               <div className="input-field col s12 m6">
 
                 <select className="browser-default icons" onChange={this.handleChange}>
-                  <option value="" disabled defaultValue>Choose Section Type</option>
-                  <option value="text" disabled >Text</option>
+                  <option value="" disabled defaultValue selected >Choose Section Type</option>
+                  <option value="text" >Text</option>
                   <option value="dreamboard" disabled >Dreamboard</option>
                   <option value="image">Images</option>
                 </select>

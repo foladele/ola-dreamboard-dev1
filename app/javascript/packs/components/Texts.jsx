@@ -9,7 +9,9 @@ class Texts extends React.Component {
   render() {
     return (
       <div>
-        <p>Texts</p>
+        <div className="center" >
+          <p><i className="material-icons medium modal-trigger" data-target="textModal">rate_review</i></p>
+        </div>
       </div>
     )
   }

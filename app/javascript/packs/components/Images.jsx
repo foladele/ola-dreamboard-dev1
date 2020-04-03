@@ -103,7 +103,6 @@ class Images extends React.Component {
                   thumbnailHeight: 212,
                  }
                 ]}
-                
               />
               <div>
               { Boolean(this.state.images.length < 12 && (this.state.images.indexOf(image) === lastImageIndex)) ? 

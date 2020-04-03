@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import AddItems from './AddItems'
 import Section from './Section'
+import Textpad from './Textpad'
 import { connect } from 'react-redux';
 import { updateSection, addSection, deleteSection } from '../components/actions';
 
@@ -127,6 +128,7 @@ class Sections extends React.Component {
       <div className=" ">
         <ul>{sections}</ul>
         <AddItems addSection={this.addSection}/>
+        <Textpad/>
       </div>
     )
   }
