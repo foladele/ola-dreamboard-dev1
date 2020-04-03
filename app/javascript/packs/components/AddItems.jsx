@@ -28,6 +28,7 @@ class AddItems extends React.Component {
     this.toggleCardColor = this.toggleCardColor.bind(this);
     this.getColor = this.getColor.bind(this);
     this.addNewImage = this.addNewImage.bind(this);
+    //this.realoadPage = this.realoadPage.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
@@ -284,16 +285,19 @@ componentDidUpdate(prevProps, prevState) {
 
     }
 
-    window.location.reload(true);
+    setTimeout(window.location.reload(true), 3000);
     // window.location.reload(true);
   }
 
+  // realoadPage(){
+  //   window.location.reload(true);
+  // }
 
 
   render(){
 
     //console.log("store ", this.props.state.sectionIdReducer);
-    console.log("store ", this.props.state)
+    //console.log("store ", this.props.state)
 
   	return(
   		<div>

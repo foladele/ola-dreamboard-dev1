@@ -21,11 +21,9 @@ class Images extends React.Component {
     this.dispatchSectionId = this.dispatchSectionId.bind(this);
     this.dispatchImageId = this.dispatchImageId.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
-    this.setIsHover = this.setIsHover.bind(this);
     this.state = { 
       sectionId: 0,
       images: [],
-      hover: false,
     };
   }
 
@@ -82,12 +80,6 @@ class Images extends React.Component {
     //window.location.reload(false);
 
   }
-
-  setIsHover(state){
-    //console.log("reachn");
-    this.setState({ hover: state });  
-  }
-
 
   render() {
     //console.log("state image ", this.state.images);
