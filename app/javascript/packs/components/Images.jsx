@@ -21,9 +21,11 @@ class Images extends React.Component {
     this.dispatchSectionId = this.dispatchSectionId.bind(this);
     this.dispatchImageId = this.dispatchImageId.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
+    this.setIsHover = this.setIsHover.bind(this);
     this.state = { 
       sectionId: 0,
-      images: []
+      images: [],
+      hover: false,
     };
   }
 
@@ -81,32 +83,48 @@ class Images extends React.Component {
 
   }
 
+  setIsHover(state){
+    //console.log("reachn");
+    this.setState({ hover: state });  
+  }
+
 
   render() {
     //console.log("state image ", this.state.images);
     if(this.state.images.length > 0 ){
 
+      let lastImageIndex = this.state.images.indexOf(this.state.images.slice(-1)[0]) ;
+      
       let images = this.state.images.map(image => {
-        image = image
+        
         return (
           <li key={`image-${image.id}`} className="mdc-image-list__item card" style={mdc_image_list__item}>
-            <div className="mdc-image-list__image-aspect-container card-image" style={mdc_image_list__image_aspect_container}>
+            <div className="mdc-image-list__image-aspect-container card-image" 
+            style={mdc_image_list__image_aspect_container}>
               {/*<img className="mdc-image-list__image card-image" src={image.image}/>*/}
-              <Lightbox images={[
+              <Gallery images={[
                  {
                   src: `${image.image}`,
-                  title: `${image.title}`,
+                  thumbnail: `${image.image}`, 
+                  caption: `${image.description}`,
+                  thumbnailWidth: 325,
+                  thumbnailHeight: 212,
                  }
                 ]}
-                thumbnailWidth='278px'
-                thumbnailHeight='278px' 
-
+                
               />
-              
+              <div>
+              { Boolean(this.state.images.length < 12 && (this.state.images.indexOf(image) === lastImageIndex)) ? 
+                (<a className="btn-floating halfway-fab waves-effect waves-light red">
+                  <i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i>
+                  </a>) :
+                (null)
+              }
+              </div>
             </div>
             <div className="card-content">
               <span className="card-title black-text ">{image.title}</span>
-              <p>{image.description}</p>
+             {/* <p>{image.description}</p>*/}
             </div>
             <div className="card-action">
               <a className="modal-close waves-effect waves-green btn-flat right" onClick={() => this.deleteImage(image.id)}>Delete</a>
