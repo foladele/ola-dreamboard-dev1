@@ -1,10 +1,11 @@
-# require 'fog/aws'
+require 'pry'
 class Api::ImagesController < ApplicationController
 
 	before_action :find_section
   
   def index
-    render json: @section.images
+    # binding.pry
+    render json: @section.images #.all.with_attached_image
   end
 
   def create
@@ -19,6 +20,7 @@ class Api::ImagesController < ApplicationController
   def update
     @image = Image.find(params[:id])
     if @image.update(image_params)
+    # if UpdateImageService(@image, image_params).call
       render json: @image
     else
        render json: { errors: @image.errors, status: :unprocessable_entity }
@@ -37,6 +39,6 @@ class Api::ImagesController < ApplicationController
     end
 
     def image_params
-      params.require(:image).permit(:image, :title, :kind, :description)
+      params.require(:image).permit(:title, :kind, :description, :image)
     end
 end

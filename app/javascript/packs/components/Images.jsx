@@ -82,8 +82,11 @@ class Images extends React.Component {
   }
 
   render() {
-    //console.log("state image ", this.state.images);
+    console.log("state ", this.state);
+    console.log("state images ", this.state.images);
+    
     if(this.state.images.length > 0 ){
+
 
       let lastImageIndex = this.state.images.indexOf(this.state.images.slice(-1)[0]) ;
       
@@ -93,11 +96,11 @@ class Images extends React.Component {
           <li key={`image-${image.id}`} className="mdc-image-list__item card" style={mdc_image_list__item}>
             <div className="mdc-image-list__image-aspect-container card-image" 
             style={mdc_image_list__image_aspect_container}>
-              {/*<img className="mdc-image-list__image card-image" src={image.image}/>*/}
+              {/*<img className="mdc-image-list__image card-image" src={image.image.url}/>*/}
               <Gallery images={[
                  {
-                  src: `${image.image}`,
-                  thumbnail: `${image.image}`, 
+                  src: `${image.image.url}`,
+                  thumbnail: `${image.image.url}`, 
                   caption: `${image.description}`,
                   thumbnailWidth: 325,
                   thumbnailHeight: 212,

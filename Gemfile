@@ -19,10 +19,10 @@ gem 'webpacker'
 # gem 'mini_racer', platforms: :ruby
 gem 'devise'
 gem 'materialize-sass'
-# gem 'active_model_serializers'
+gem 'active_model_serializers'
 gem 'carrierwave', '~> 1.0'
 gem "mini_magick"
-gem "paperclip", ">= 5.2.0"
+# gem "paperclip", ">= 5.2.0"
 # rails c error 
 gem 'rb-readline'
 # Use CoffeeScript for .coffee assets and views

@@ -9,6 +9,9 @@ import { mdc_image_list__image_aspect_container, mdc_image_list__item, mdc_image
 import watch from 'redux-watch'
 import { addImages, updateImage } from '../components/actions';
 import Lightbox from 'react-lightbox-component';
+import { DirectUpload } from "@rails/activestorage"
+
+//const input = document.querySelector('input[type=file]');
 
 
 class AddItems extends React.Component {
@@ -20,9 +23,12 @@ class AddItems extends React.Component {
       isCardColor: false,
       color: "fff",
       kind: "",
+      mode: "",
       sectionId: 0,
       acceptedFiles: [],
       images: [],
+      signed_id: 0,
+      loading: false,
     };
 
     this.addSection = this.addSection.bind(this);
@@ -30,6 +36,9 @@ class AddItems extends React.Component {
     this.getColor = this.getColor.bind(this);
     this.addNewImage = this.addNewImage.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeMode = this.handleChangeMode.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
+
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
@@ -92,8 +101,13 @@ componentDidUpdate(prevProps, prevState) {
     //TODO update to get from states
     //let kind = "image";
     let kind = this.state.kind
+    let mode = this.state.mode
+    if(mode === '')
+    {
+      mode = 'public';
+    }
     e.preventDefault();
-    let section = {title: title, color: color, collapse: collapse, kind: kind};
+    let section = {title: title, color: color, collapse: collapse, kind: kind, mode: mode};
     console.log(section);
     this.props.addSection(section);
 
@@ -106,6 +120,15 @@ componentDidUpdate(prevProps, prevState) {
     console.log("kind", kind);
 
     this.setState({ kind: kind });
+  }
+
+  handleChangeMode(e) {
+
+    e.preventDefault();
+    let mode = e.target.value
+    console.log("mode: ", mode);
+
+    this.setState({ mode: mode });
   }
 
   getColor(color) {
@@ -123,33 +146,62 @@ componentDidUpdate(prevProps, prevState) {
         acceptedFiles
     });
 
-    //console.log("this.state.files ", this.state.acceptedFiles)
+    Array.from(acceptedFiles).forEach(acceptedFile => this.uploadFile(acceptedFile))
+
+    console.log("this.state.files ", this.state.acceptedFiles[0])
     this.setState({ images: this.props.state.images });
+    this.setState({ loading: true });
     
-    var binaryStr;
-    const fileList = document.getElementById("fileList");
-    fileList.innerHTML = "";
-    //console.log("reaching -0", acceptedFiles[0])
+     let binaryStr;
+      const fileList = document.getElementById("fileList");
+      fileList.innerHTML = "";
+      //console.log("reaching -0", acceptedFiles[0])
+      let para = document.createElement("p");
+      let node = document.createTextNode("loading...");
+      fileList.appendChild(node);
 
-    for (let i = 0; i < acceptedFiles.length; i++) {
-      const file = acceptedFiles[i];
-      const img = document.createElement("img");
-      img.classList.add("obj");
-      img.file = file;
-      img.height = 250;
-      fileList.appendChild(img);
+    setTimeout( ( ) => { 
+      fileList.innerHTML = "";
 
-      const reader = new FileReader();
-      reader.onload = (function(aImg) 
-      { return function(e) { 
-          aImg.src = e.target.result;
-        }; 
-      })(img);
-      
-      reader.readAsDataURL(file);
-      
-    }
+      for (let i = 0; i < acceptedFiles.length; i++) {
+        const file = acceptedFiles[i];
+        const img = document.createElement("img");
+        img.classList.add("obj");
+        img.file = file;
+        img.height = 150;
+        fileList.appendChild(img);
 
+        const reader = new FileReader();
+        reader.onload = (function(aImg) 
+        { return function(e) { 
+            aImg.src = e.target.result;
+          }; 
+        })(img);
+        
+        reader.readAsDataURL(file);
+        
+      }
+
+    }, 10000)
+
+  }
+
+  uploadFile(file){
+    const url = 'rails/active_storage/direct_uploads'
+    const upload = new DirectUpload(file, url)
+
+    upload.create((error, blob) => {
+
+        if (error) {
+          console.log("error", error);
+        } else {
+          console.log("blob::: ", blob);
+          console.log("blob::: ", blob.signed_id);
+          this.setState({ signed_id: blob.signed_id });
+         
+
+        }
+      })
   }
 
   addNewImage(e)
@@ -163,10 +215,12 @@ componentDidUpdate(prevProps, prevState) {
     let kind = "image"
     //console.log("item Images::: ", title,kind,description );
 
-    this.state.acceptedFiles.map(img => {
+    // this.state.acceptedFiles.map(img => {
 
       const fileData = new FormData();
-      let image = img;
+      let image =  this.state.signed_id; //this.state.acceptedFiles[0]
+      console.log("item Images::: ", image);
+
       fileData.append("image[image]", image);
       fileData.append("image[title]", title);
       fileData.append("image[description]", description);
@@ -190,7 +244,7 @@ componentDidUpdate(prevProps, prevState) {
           console.log(image);
        })//end done
 
-    })//end maping
+    // })//end maping
 
     window.location.reload(false);
   }
@@ -312,6 +366,13 @@ componentDidUpdate(prevProps, prevState) {
               <input placeholder="Title" ref="title" required={true} />
               <div className="input-field col s12 m6">
 
+                <select className="browser-default icons" onChange={this.handleChangeMode}>
+                  <option value="" disabled defaultValue selected >Select Mode</option>
+                  <option value="public" >Public</option>
+                  <option value="private" >Private</option>
+                </select>
+                <br/>
+
                 <select className="browser-default icons" onChange={this.handleChange}>
                   <option value="" disabled defaultValue selected >Choose Section Type</option>
                   <option value="text" >Text</option>
@@ -390,7 +451,7 @@ componentDidUpdate(prevProps, prevState) {
                           (<div>
                             <Lightbox images={[
                                {
-                                src: `${this.props.state.image.image}`,
+                                src: `${this.props.state.image.image.url}`,
                                 title: `${this.props.state.image.title}`,
                                }
                               ]}
@@ -400,7 +461,9 @@ componentDidUpdate(prevProps, prevState) {
                             />
 
                           </div>) : 
-                          (<div><p>No files selected!</p></div>)
+                          (<div>
+                            <p>No files selected!</p>
+                          </div>)
                         }
                       </div>
                     </div>

@@ -4,6 +4,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
     "@material/image-list": "^5.1.0",
+    "@rails/activestorage": "^6.0.2-2",
     "@rails/webpacker": "5.0.1",
     "@version/react-router-v3": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",

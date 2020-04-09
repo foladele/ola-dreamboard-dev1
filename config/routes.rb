@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 	
-	root 'home#index'
+	root to: 'home#index'
 
   namespace :api, defaults: { format: :json } do
     resources :section do
@@ -13,6 +13,6 @@ Rails.application.routes.draw do
         session: 'users/sessions',
   }
   
-  get '*unmatched_route', to: 'home#index'
+  # get '*unmatched_route', to: 'home#index'
   
 end

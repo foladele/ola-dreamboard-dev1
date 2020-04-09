@@ -1,0 +1,15 @@
+<CORSConfiguration>
+<CORSRule>
+    <AllowedOrigin>http://localhost:3000</AllowedOrigin>
+    <AllowedOrigin>https://ola-dreamboard-dev1.herokuapp.com</AllowedOrigin>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>DELETE</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedHeader>Origin</AllowedHeader>
+    <AllowedHeader>Content-Type</AllowedHeader>
+    <AllowedHeader>Content-MD5</AllowedHeader>
+    <AllowedHeader>Content-Disposition</AllowedHeader>
+    <MaxAgeSeconds>3600</MaxAgeSeconds>
+</CORSRule>
+</CORSConfiguration>

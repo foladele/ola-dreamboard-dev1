@@ -12,6 +12,7 @@ class Section < ApplicationRecord
 	    color: color,
 	    collapse: collapse,
 	    kind: kind,
+	    mode: mode,
 	    errors: errors
 	  }
 	 end

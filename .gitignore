@@ -33,3 +33,5 @@
 yarn-debug.log*
 .yarn-integrity
 .env
+transfer_key.pub
+transfer_key
