@@ -1,5 +1,5 @@
 class SessionsController < Devise::SessionsController
-  skip_before_action :authenticate_user_from_token!
+  # skip_before_action :authenticate_user_from_token!
 
   # POST /v1/login
   def create
