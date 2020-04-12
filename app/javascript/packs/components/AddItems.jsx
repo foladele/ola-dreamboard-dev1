@@ -182,7 +182,7 @@ componentDidUpdate(prevProps, prevState) {
         
       }
 
-    }, 10000)
+    }, 3000)
 
   }
 

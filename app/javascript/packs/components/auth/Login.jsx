@@ -11,14 +11,7 @@ class Login extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.state = { error: false, redirectRoute: redirectLocation }
 	}
-
-	UNSAFE_componentWillMount() {
-    
-    const userId = localStorage.getItem('userId');
-    const apiKey = localStorage.getItem('apiKey');
-    
-  }
-
+	
 	handleSubmit(e) {
     e.preventDefault();
     const email = this.refs.email.value;

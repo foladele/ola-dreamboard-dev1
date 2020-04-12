@@ -128,9 +128,26 @@ class Section extends React.Component {
           <div className="card-action black-text">
             <span className="card-title">{this.props.title }</span>
             <a className="right">
-            {Boolean(this.props.firstSectionIndex !== this.props.yourIndex) ? (<div onClick={this.deleteSection}>delete</div>): (null)}
+            {/*{Boolean(this.props.firstSectionIndex !== this.props.yourIndex) ? 
+              (<div onClick={this.deleteSection}>delete</div>): 
+              (null)}*/}
+              <div>
+              {
+                Boolean(localStorage.getItem('userId') !== null) ? 
+                (<div onClick={this.deleteSection}>delete</div>): 
+                (null)
+              }
+              </div>
             </a>
-            <a className=" right" onClick={this.toggleEditSection}>Edit</a>
+
+           {/* <a className=" right" onClick={this.toggleEditSection}>Edit</a>*/}
+           <a className=" right">
+            {
+              Boolean(localStorage.getItem('userId') !== null) ? 
+              (<div className=" right" onClick={this.toggleEditSection}>Edit</div>): 
+              (null)
+            }
+            </a>
             <a className="right" onClick={this.toggleCollapse}>
               {Boolean(this.props.collapse) ? (<div>expand</div>): (<div>collapse</div>)}
             </a>

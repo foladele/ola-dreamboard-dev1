@@ -82,8 +82,8 @@ class Images extends React.Component {
   }
 
   render() {
-    console.log("state ", this.state);
-    console.log("state images ", this.state.images);
+    console.log("state ", localStorage.getItem('userId'));
+    // console.log("state images ", this.state.images);
     
     if(this.state.images.length > 0 ){
 
@@ -109,9 +109,14 @@ class Images extends React.Component {
               />
               <div>
               { Boolean(this.state.images.length < 12 && (this.state.images.indexOf(image) === lastImageIndex)) ? 
-                (<a className="btn-floating halfway-fab waves-effect waves-light red">
-                  <i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i>
-                  </a>) :
+                (<div>
+                  {Boolean(localStorage.getItem('userId') !== null) ? 
+                    ( <a className="btn-floating halfway-fab waves-effect waves-light red">
+                        <i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i>
+                      </a>
+                    ) : (null)
+                  }
+                </div>) :
                 (null)
               }
               </div>
@@ -120,9 +125,14 @@ class Images extends React.Component {
               <span className="card-title black-text ">{image.title}</span>
              {/* <p>{image.description}</p>*/}
             </div>
-            <div className="card-action">
-              <a className="modal-close waves-effect waves-green btn-flat right" onClick={() => this.deleteImage(image.id)}>Delete</a>
-              <a className="modal-close waves-effect waves-green btn-flat right modal-trigger" data-target="imagemodal" onClick={ () => this.dispatchImageId(image.id) }>Edit</a>
+            <div>
+            {
+               Boolean(localStorage.getItem('userId') !== null) ? 
+               (<div className="card-action">
+                  <a className="modal-close waves-effect waves-green btn-flat right" onClick={() => this.deleteImage(image.id)}>Delete</a>
+                  <a className="modal-close waves-effect waves-green btn-flat right modal-trigger" data-target="imagemodal" onClick={ () => this.dispatchImageId(image.id) }>Edit</a>
+                </div>): (null)
+            }   
             </div>
           </li>
       )
@@ -132,7 +142,7 @@ class Images extends React.Component {
         <div>
           <div className="">
            <p className="center" style={{ position: 'relative'}} >
-           { Boolean(this.state.images.length < 12) ? 
+           { Boolean((this.state.images.length < 12) && (localStorage.getItem('userId') !== null) ) ? 
             (<i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i>) : (null)
            }
            </p>
