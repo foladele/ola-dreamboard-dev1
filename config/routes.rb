@@ -9,10 +9,15 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: {
-        registrations: 'users/registrations',
-        session: 'users/sessions',
+        registrations: 'registrations',
+        session: 'sessions',
   }
-  
+
   # get '*unmatched_route', to: 'home#index'
+  
+  get '/login', to: 'home#index'
+  get '/settings', to: 'home#index'
+  get '/contact', to: 'home#index'
+  get '/about', to: 'home#index'
   
 end

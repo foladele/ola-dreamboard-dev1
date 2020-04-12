@@ -1,5 +1,6 @@
 require 'pry'
 class Api::SectionController < ApplicationController
+  
   def index
   	@sections = Section.all
     render json: @sections
@@ -35,8 +36,8 @@ class Api::SectionController < ApplicationController
 
   private
 
-  def section_params
-    # binding.pry
-    params.require(:section).permit(:title, :color, :collapse, :kind, :mode)
-  end
+    def section_params
+      # binding.pry
+      params.require(:section).permit(:title, :color, :collapse, :kind, :mode)
+    end
 end

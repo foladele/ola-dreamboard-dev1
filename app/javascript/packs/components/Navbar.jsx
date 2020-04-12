@@ -4,6 +4,8 @@ import { handleLogout } from './auth/actions';
 import { connect } from 'react-redux';
 // import 'materialize-css/dist/css/materialize.min.css';
 import M from  'materialize-css/dist/js/materialize.min.js';
+import { Redirect } from "react-router-dom";
+
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -26,14 +28,17 @@ class Navbar extends React.Component {
 			return(
 				[
 				  <li key='auth-link-0'><Link to="/admin">Admin</Link></li>,
-				  <li key='auth-link-1'><a href='#' onClick={this.logout}>Logout</a></li>
+				  <li key='auth-link-1'><Link to="/" className="modal-trigger" data-target="modal2" >Add Section</Link></li>,
+				  <li key='auth-link-2'><a href='#' onClick={this.logout}>Logout</a></li>
+				  
 				]
 			)
 	  else
-	  	return(	<li><Link to="/login">Login</Link></li>)
+	  	return(	<li><Link to="/login">Admin Login</Link></li>)
 	}
 
 	render() {
+		console.log("Navbar ", this.props)
 		return(
 			<header>
 				<nav className="grey lighten-5">
@@ -45,7 +50,6 @@ class Navbar extends React.Component {
 				      <li><Link to="/about">About</Link></li>
 				      <li><Link to="/contact">Contact</Link></li>
 				      <li><Link to="/settings">Settings</Link></li>
-				      <li><Link to="/" className="modal-trigger" data-target="modal2" >Add Section</Link></li>
               {this.authLink()}
             </ul>
 					</div>

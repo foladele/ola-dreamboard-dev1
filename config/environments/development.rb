@@ -9,6 +9,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
+ # code skip helpers
+  config.action_controller.include_all_helpers = false
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -32,7 +34,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :amazon
+  config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

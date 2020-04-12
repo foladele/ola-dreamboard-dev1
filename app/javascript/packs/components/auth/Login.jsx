@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { handleLogin } from './actions';
+import { browserHistory } from 'react-router';
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -10,11 +12,20 @@ class Login extends React.Component {
 		this.state = { error: false, redirectRoute: redirectLocation }
 	}
 
+	UNSAFE_componentWillMount() {
+    
+    const userId = localStorage.getItem('userId');
+    const apiKey = localStorage.getItem('apiKey');
+    
+  }
+
 	handleSubmit(e) {
     e.preventDefault();
     const email = this.refs.email.value;
     const password = this.refs.password.value;
-    this.props.dispatch(handleLogin(email, password, this.state.redirectRoute, this.props.history));
+    // console.log("login Component ", history);
+    this.props.dispatch(handleLogin(email, password, this.state.redirectRoute, browserHistory));
+   
 	}
 
 	render() {
@@ -28,6 +39,7 @@ class Login extends React.Component {
 				  </form>
 			</div>
 		)
+		
 	}
 }
 

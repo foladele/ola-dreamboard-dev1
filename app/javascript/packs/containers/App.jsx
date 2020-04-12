@@ -4,6 +4,9 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { loggedIn, logout } from '../components/auth/actions';
 import { getSections } from '../components/actions';
+import { Redirect } from "react-router-dom";
+// import { createHashHistory } from 'history'
+import { browserHistory } from 'react-router';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,10 +25,11 @@ class App extends React.Component {
   }
 
   render() {
+    // console.log("app ", this.props.auth);
     return (
       <div> 
         <div>
-          <Navbar auth={this.props.auth} history={this.props.history} />
+          <Navbar auth={this.props.auth} history={browserHistory} />
           <div>{ this.props.children }</div>
         </div> 
         <div>
