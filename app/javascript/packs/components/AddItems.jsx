@@ -13,7 +13,6 @@ import { DirectUpload } from "@rails/activestorage"
 
 //const input = document.querySelector('input[type=file]');
 
-
 class AddItems extends React.Component {
 
 	constructor(props) {
@@ -210,7 +209,7 @@ componentDidUpdate(prevProps, prevState) {
     e.preventDefault();
     //console.log("new image? ", this.state.sectionId , " ", this.state.acceptedFiles)
     let id = this.state.sectionId
-    let title = this.refs.imgTitle.value;;
+    let title = this.refs.imgTitle.value;
     let description = this.refs.imagedes.value;
     let kind = "image"
     //console.log("item Images::: ", title,kind,description );

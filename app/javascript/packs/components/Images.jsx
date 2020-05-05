@@ -148,7 +148,7 @@ class Images extends React.Component {
            </p>
            <br/>
             <ul className="mdc-image-list my-image-list" >
-              <div className=" col s12 m7">{images}</div>
+              <div className="col s12 m7">{images}</div>
             </ul>
           </div>
           
@@ -159,9 +159,15 @@ class Images extends React.Component {
     }else{
       return (
         <div>
-          <div className="center" >
+        {
+          Boolean(localStorage.getItem('userId') !== null) ? 
+          (<div className="center" >
             <p><i className="material-icons medium modal-trigger" data-target="imagemodal"  onClick={this.dispatchSectionId} >add_a_photo</i></p>
-          </div>
+          </div>) : 
+          (<div  className="center">
+            <p>No images added by user</p>
+          </div>)
+        }
         </div>
       )
     }

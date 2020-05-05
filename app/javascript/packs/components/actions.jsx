@@ -147,6 +147,14 @@ export const getImage = (image, images) => {
   })
 }
 
+export const getTextId = (id) => {
+  return(dispatch => {
+    let obj = { type: 'TEXT_ID', id }
+    // console.log(obj);
+    dispatch(obj);
+  })
+}
+
 export const updateImage = (id, sectionId, fileData, images) => {
   
   return(dispatch => {

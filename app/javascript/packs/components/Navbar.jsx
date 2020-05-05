@@ -38,7 +38,7 @@ class Navbar extends React.Component {
 	}
 
 	render() {
-		console.log("Navbar ", this.props)
+		// console.log("Navbar ", this.props)
 		return(
 			<header>
 				<nav className="grey lighten-5">

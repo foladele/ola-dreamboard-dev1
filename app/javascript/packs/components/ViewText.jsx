@@ -1,13 +1,15 @@
 import React from 'react';
-import { AtomicBlockUtils, convertToRaw, Modifier, convertFromRaw, EditorState, RichUtils } from 'draft-js';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import Editor from 'draft-js-plugins-editor';
+import { AtomicBlockUtils, convertToRaw, Modifier, convertFromRaw, EditorState, RichUtils } from 'draft-js';
 import BlockStyleControls from './BlockStyleControls';
 import InlineStyleControls from './InlineStyleControls';
 import ColorControls from './ColorControls';
 import PropTypes from "prop-types";
 import Dropzone from 'react-dropzone';
 import request from "superagent";
-import { connect } from 'react-redux';
 
 
 const styleMap = {
@@ -74,84 +76,75 @@ const styles = {
   }
 };
 
-class Textpad extends React.Component {
 
-constructor(props) {
-  super(props);
-  this.state ={
-    editorState: EditorState.createEmpty(),
-    eidtTitle: false,
-    textTitle: "Title?",
-    showURLInput: false,
-    url: '',
-    urlType: '',
-    urlValue: '',
-    files: [],
-  };
+class ViewText extends React.Component {
+    constructor(props) {
+		super(props);
+		this.state = {
+		  editorState: EditorState.createEmpty(),
+		  text: [],
+      eidtTitle: false,
+      textTitle: "Title?",
+      showURLInput: false,
+      url: '',
+      urlType: '',
+      urlValue: '',
+      files: [],
+		};
 
-  this.onChange = this.onChange.bind(this);
-  this.focus = () => this.refs.editor.focus();
-  this.handleKeyCommand = this.handleKeyCommand.bind(this);
-  this.saveContent = this.saveContent.bind(this);
-  this.saveText = this.saveText.bind(this);
-  this.getBlockStyle = this.getBlockStyle.bind(this);
-  this.onTab = this.onTab.bind(this);
-  this.eidtTitle = this.eidtTitle.bind(this);
-  this.textTitle = this.textTitle.bind(this);
-  this.addImage = this.addImage.bind(this);
-  this.mediaBlockRenderer = this.mediaBlockRenderer.bind(this);
-  this.confirm = this.confirm.bind(this);
-  this.toggleColor = this.toggleColor.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.focus = () => this.refs.editor.focus();
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.saveContent = this.saveContent.bind(this);
+    this.saveText = this.saveText.bind(this);
+    this.getBlockStyle = this.getBlockStyle.bind(this);
+    this.onTab = this.onTab.bind(this);
+    this.eidtTitle = this.eidtTitle.bind(this);
+    this.textTitle = this.textTitle.bind(this);
+    this.addImage = this.addImage.bind(this);
+    this.mediaBlockRenderer = this.mediaBlockRenderer.bind(this);
+    this.confirm = this.confirm.bind(this);
+    this.toggleColor = this.toggleColor.bind(this);
 
-  this.toggleShowURLInputImage = this.toggleShowURLInputImage.bind(this);
-  this.toggleShowURLInputVedio = this.toggleShowURLInputVedio.bind(this);
-  this.toggleShowURLInputAudio = this.toggleShowURLInputAudio.bind(this);
-
-  // session - component did mount
-  // const content = window.sessionStorage.getItem('content');
-
-  // if (content) {
-  //   this.state.editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(content)));
-  //   console.log('content-2 state', convertFromRaw(JSON.parse(content)));
-  // } else {
-  //   this.state.editorState = EditorState.createEmpty();
-  // }
-  
-}
+    this.toggleShowURLInputImage = this.toggleShowURLInputImage.bind(this);
+    this.toggleShowURLInputVedio = this.toggleShowURLInputVedio.bind(this);
+    this.toggleShowURLInputAudio = this.toggleShowURLInputAudio.bind(this);
+	}
 
   componentWillUnmount() {
     // Make sure to revoke the data uris to avoid memory leaks
     this.state.files.forEach(f => URL.revokeObjectURL(f.preview))
   }
 
-  componentDidMount() {
+	componentWillMount(){
 
-    //Get text with Ajax
+			let s_id = this.props.state.sectionIdReducer.id;
+			let t_id = parseInt(this.props.params.id[1]);
 
+     $.ajax({
+        url: `/api/section/${s_id}/texts`,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+          // console.log(" text data", data);
+        }
+      }).done( texts => { 
+      	let getText = texts.find( i => i.id === t_id );
+      	// console.log("text info ", getText.content);
+      	this.setState({ text: getText });
 
-    const options = {
-      onOpenStart: () => { 
-      },
-      onOpenEnd: () => {   
-      },
-      onCloseStart: () => {
-      },
-      onCloseEnd: () => {
-      },
-      inDuration: 250,
-      outDuration: 250,
-      opacity: 0.5,
-      dismissible: false,
-      startingTop: "4%",
-      endingTop: "10%"
-    };
-
-    M.Modal.init(this.TextModal, options);
-
-  }
-
-
-handleKeyCommand(command, editorState){
+      	//Uncaught Invariant Violation: invalid RawDraftContentState
+      	// JSON.parse(str);
+      	let rawContent = getText.content;
+      	if (rawContent) {
+		      this.setState({ editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(rawContent))) })
+          this.setState({ textTitle: getText.title});
+		    } else {
+		      this.setState({ editorState: EditorState.createEmpty() });
+		    }
+          
+      })
+  }handleKeyCommand(command, editorState){
 
   const newState = RichUtils.handleKeyCommand(editorState, command);
 
@@ -180,12 +173,13 @@ saveContent(content){
 saveText(e){
   e.preventDefault();
   const contentState = this.state.editorState.getCurrentContent();
-  console.log('content', JSON.stringify(convertToRaw(contentState)));
+  // console.log('content', JSON.stringify(convertToRaw(contentState)));
 
   let id = this.props.state.sectionIdReducer.id
   let title = this.state.textTitle;
   let textContent = JSON.stringify(convertToRaw(contentState));
   let kind = "text"
+  let t_id = this.state.text.id
 
   const fileData = new FormData();
 
@@ -194,8 +188,8 @@ saveText(e){
   fileData.append("text[content]", textContent);
 
   $.ajax({
-     url: `/api/section/${id}/texts`,
-     type: 'POST',
+     url: `/api/section/${id}/texts/${t_id}`,
+     type: 'PUT',
      data: fileData,
      dataType: 'JSON',
      contentType: false,
@@ -280,9 +274,9 @@ toggleColor(toggledColor)
 
 toggleShowURLInputImage()
 {
-  //console.log("image" );
+  // console.log("image" );
   this.setState({
-    showURLInput: true,
+    showURLInput: !this.state.showURLInput,
     urlType: 'image'
   });
 }
@@ -292,7 +286,7 @@ toggleShowURLInputVedio()
  
   //console.log("video" );
   this.setState({
-    showURLInput: true,
+    showURLInput: !this.state.showURLInput,
     urlType: 'video'
   });
 }
@@ -301,7 +295,7 @@ toggleShowURLInputAudio()
 {
   //console.log("audio" );
   this.setState({
-    showURLInput: true,
+    showURLInput: !this.state.showURLInput,
     urlType: 'audio'
   });
 }
@@ -311,7 +305,7 @@ promptForMedia(type, src){
   // console.log("src: ", src);
   // console.log(" state src: ", this.state.urlValue);
   this.setState({
-      showURLInput: true,
+      showURLInput: !this.state.showURLInput,
       urlValue: src,
       urlType: type
     });
@@ -346,10 +340,10 @@ addImage(acceptedFiles)
   var binaryStr;
   const mediaFileList = document.getElementById("mediaFileList");
   mediaFileList.innerHTML = "";
-  console.log("reaching -0", acceptedFiles[0])
+  // console.log("reaching -0", acceptedFiles[0])
   for (let i = 0; i < acceptedFiles.length; i++) {
 
-    console.log("reaching -i times", acceptedFiles[i]);
+    // console.log("reaching -i times", acceptedFiles[i]);
 
     const file = acceptedFiles[i];
 
@@ -415,121 +409,129 @@ mediaBlockRenderer(block) {
   return null;
 }
 
- render() {
-  // console.log("Textpad state ", this.props.state);
-  let selectionId = this.props.state.sectionIdReducer.id;
-  const {files} = this.state;
-    return (
-      <div>
-        <div ref={Modal => { this.TextModal = Modal; }} id="textModal" className="modal modal-fixed-footer">
-          <div className="modal-content">
-            <div className="container">
-              <div className="RichEditor-root">
-                {
-                  this.state.eidtTitle ? 
-                  (<div>
-                    <button className="right" onClick={this.eidtTitle}>Save</button>
-                    <h1 className="center" style={{ padding: "10px", border: "1px solid #ddd"}}>
-                      <input placeholder="Title" ref="title" required={true} onChange={this.textTitle}/>
-                    </h1>
 
-                  </div>) 
-                  : 
-                  (<div>
-                    <h4 className="center" style={{ padding: "10px", border: "1px solid #ddd"}} onClick={this.eidtTitle}>{this.state.textTitle}</h4>
-                  </div>)
-                }
-                    <BlockStyleControls
-                      editorState={this.state.editorState}
-                      onToggle={this.toggleBlockType.bind(this)}
-                    />
-                    <InlineStyleControls
-                      editorState={this.state.editorState}
-                      onToggle={this.toggleInlineStyle.bind(this)}
-                    />
-                    <ColorControls
-                      editorState={this.state.editorState}
-                      onToggle={this.toggleColor}
-                    />
-                    <div className="row icon-container">
 
-                      <div className="icon-preview col s6 m3" onMouseDown={this.toggleShowURLInputImage}>
-                        <i className="material-icons small">add_a_photo</i>
-                        <span>add image </span>
-                      </div>
+	render() {
+		// console.log("ViewText", this.props);
+		// console.log("ViewText", this.props.state.sectionIdReducer.id);
+		// console.log("ViewText", this.props.params.id[1]);
+		 if (!this.state.editorState) {
+		    return (
+		      <h3 className="loading">Loading...</h3>
+		    );
+		  }
+		  return (
+		    <div className="container">
+          {
+            this.state.eidtTitle ? 
+            (<div>
+              <button className="right" onClick={this.eidtTitle}>Save</button>
+              <h1 className="center" style={{ padding: "10px", border: "1px solid #ddd"}}>
+                <input placeholder="Title" ref="title" required={true} onChange={this.textTitle}/>
+              </h1>
 
-                      <div className="icon-preview col s6 m3" onMouseDown={this.toggleShowURLInputVedio}>
-                        <i className="material-icons small">video_call</i>
-                        <span>add video</span>
-                      </div>
+            </div>) 
+            : 
+            (<div>
+              <h4 className="center" style={{ padding: "10px", border: "1px solid #ddd"}} onClick={this.eidtTitle}>{this.state.textTitle}</h4>
+            </div>)
+          }
+		      <div className = ''>
+             <div className = ''>
+               <div className = ''>
+                 <BlockStyleControls
+                    editorState={this.state.editorState}
+                    onToggle={this.toggleBlockType.bind(this)}
+                  />
+                  <InlineStyleControls
+                    editorState={this.state.editorState}
+                    onToggle={this.toggleInlineStyle.bind(this)}
+                  />
+                  <ColorControls
+                    editorState={this.state.editorState}
+                    onToggle={this.toggleColor}
+                  />
+                </div>
+              </div>
+              <div className="">
+                <div className="row">
 
-                      <div className="icon-preview col s6 m3" onMouseDown={this.toggleShowURLInputAudio}>
-                        <i className="material-icons small">audiotrack</i>
-                        <span>add audio</span>
-                      </div>
-                      
-                    </div>
-                    {
-                      this.state.showURLInput ? 
-                      (
-                        <div className="row">
-                          <div className="col s12">
-                            <div className="col s6">
-                              <Dropzone onDrop={this.addImage}>
-                                {({getRootProps, getInputProps}) => (
-                                  <div className="container">
-                                    <div
-                                      {...getRootProps({
-                                        className: 'dropzone',
-                                        onDrop: event => event.stopPropagation(),
-                                      })}>
-                                      <input {...getInputProps()} />
-                                      <p>Drag 'n' drop some files here, or click to select files</p>
-                                    </div>
-                                  </div>
-                                )}
-                              </Dropzone>
-                              <div  className="col s6" id="mediaFileList">
-                                <p>No files selected!</p>
+                  <div className="col-sm-2 center" onMouseDown={this.toggleShowURLInputImage}>
+                    <i className="material-icons small">add_a_photo</i>
+                    <p>add image </p>
+                  </div>
+
+                  <div className="col-sm-2 center" onMouseDown={this.toggleShowURLInputVedio}>
+                    <i className="material-icons small">video_call</i>
+                    <p>add video</p>
+                  </div>
+
+                  <div className="col-sm-2 center" onMouseDown={this.toggleShowURLInputAudio}>
+                    <i className="material-icons small">audiotrack</i>
+                    <p>add audio</p>
+                  </div>
+                  
+                </div>
+              </div>
+              {
+                this.state.showURLInput ? 
+                (
+                  <div className="row">
+                    <div className="col s12">
+                      <div className="col s6">
+                        <Dropzone onDrop={this.addImage}>
+                          {({getRootProps, getInputProps}) => (
+                            <div className="container">
+                              <div
+                                {...getRootProps({
+                                  className: 'dropzone',
+                                  onDrop: event => event.stopPropagation(),
+                                })}>
+                                <input {...getInputProps()} />
+                                <p>Drag 'n' drop some files here, or click to select files</p>
                               </div>
                             </div>
-                          </div>
+                          )}
+                        </Dropzone>
+                        <div  className="col s6" id="mediaFileList">
+                          <p>No files selected!</p>
                         </div>
-                      ) : 
-                      (null)
-                    }
-
-                    <div className = 'RichEditor-editor' style={{ padding: "10px", border: "1px solid #030a05"}}>
-                      <Editor
-                        blockRendererFn={this.mediaBlockRenderer}
-                        editorState={this.state.editorState}
-                        blockStyleFn={this.getBlockStyle}
-                        customStyleMap={styleMap}
-                        onChange={this.onChange}
-                        handleKeyCommand={this.handleKeyCommand}
-                        onTab={this.onTab}
-                        ref="editor"
-                        placeholder="Enter some text..."
-                        spellCheck={true}
-                      />
+                      </div>
                     </div>
-              </div>
-            </div>
-
+                  </div>
+                ) : 
+                (null)
+              }
+            
+            <div className = 'RichEditor-editor'>
+              <Editor
+                blockRendererFn={this.mediaBlockRenderer}
+                editorState={this.state.editorState}
+                blockStyleFn={this.getBlockStyle}
+                customStyleMap={styleMap}
+                onChange={this.onChange}
+                handleKeyCommand={this.handleKeyCommand}
+                onTab={this.onTab}
+                ref="editor"
+                placeholder="Enter some text..."
+                spellCheck={true}
+                readOnly={true}
+              />
+            </div>  
 
           </div>
+
           <div className="modal-footer">
-            <a href="" className="modal-close waves-effect waves-green btn-flat">cancel</a>
-            <a href="" className="modal-close waves-effect waves-green btn-flat" onClick={this.saveText}>ok</a>
+            <Link to="/" className="modal-close waves-effect waves-green btn-flat">Back</Link>
+            <a href="" className="modal-close waves-effect waves-green btn-flat" onClick={this.saveText}>Save</a>
           </div>
-        </div>
-      </div>
-    )
-  }
+		    </div>
+		  );
+	}
 }
 
 const mapStateToProps = (state) => {
   return{state}
 }
 
-export default connect(mapStateToProps)(Textpad);
+export default connect(mapStateToProps)(ViewText);

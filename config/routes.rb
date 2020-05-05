@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     resources :section do
       resources :images
+      resources :texts
     end
   end
 
@@ -19,5 +20,6 @@ Rails.application.routes.draw do
   get '/settings', to: 'home#index'
   get '/contact', to: 'home#index'
   get '/about', to: 'home#index'
+
   
 end

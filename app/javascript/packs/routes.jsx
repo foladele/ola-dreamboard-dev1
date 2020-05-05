@@ -11,6 +11,7 @@ import Sections from './components/Sections';
 import Section from './components/Section';
 import Settings from './components/Settings';
 import Textpad from './components/Textpad';
+import ViewText from './components/ViewText';
 // import { UserAuthWrapper } from 'redux-auth-wrapper';
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history3/redirect'
 import { handleLogout } from './components/auth/actions';
@@ -39,7 +40,8 @@ export default (
       <Route path="login" component={Login} />
       <Route path="admin" component={userIsAuthenticated(Admin)} />
       <Route path="settings" component={Settings} />
-      {/*<Route path="textpad" component={Textpad} />*/}
+      <Route path="/api/section/:id/texts/:id" component={ViewText} />
+     {/* <Route path="textpad" component={Textpad} />*/}
       {/*<Route path="/sections" component={Sections} />*/}
       <Route path="section/:id" component={Section} />
     </Route>

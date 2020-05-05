@@ -68,12 +68,15 @@ class StyleButton extends React.Component {
     // let className = 'RichEditor-styleButton waves-effect';
     // if (this.props.active) {
     //   className += ' RichEditor-activeButton waves-light';
+    console.log("styleButton props ", this.props)
     // }
     let style;
     if (this.props.active) {
       style = {...styles.styleButton, ...colorStyleMap[this.props.style]};
+      console.log("StyleButton-if: ", style)
     } else {
       style = styles.styleButton;
+      console.log("StyleButton-else: ", style)
     }
 
     return (
