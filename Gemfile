@@ -20,7 +20,7 @@ gem 'webpacker'
 gem 'devise'
 gem 'materialize-sass'
 gem 'active_model_serializers'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
 gem "mini_magick"
 # gem "paperclip", ">= 5.2.0"
 # rails c error 
