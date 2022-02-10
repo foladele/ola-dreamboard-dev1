@@ -34,7 +34,7 @@
     "superagent": "^5.2.2"
   },
   "devDependencies": {
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "webpack-dev-server": "^3.10.3"
   }
 }
